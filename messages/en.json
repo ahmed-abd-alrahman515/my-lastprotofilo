@@ -1,0 +1,1048 @@
+{
+  "meta": {
+    "title": "Ahmed Alaydi — Full-Stack Developer & Product Systems Builder",
+    "description": "Full-Stack Developer with 3+ years building production SaaS, ERP, CRM, CMS, dashboards, APIs, and mobile apps with Laravel, React, Next.js, React Native, and Flutter.",
+    "ogTitle": "Ahmed Alaydi — Full-Stack Developer & Product Systems Builder",
+    "ogDescription": "I build complete business systems — dashboards, APIs, and mobile apps — not just websites."
+  },
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "services": "Services",
+    "skills": "Skills",
+    "projects": "Projects",
+    "contact": "Contact",
+    "language": "Language",
+    "theme": "Theme",
+    "menu": "Menu",
+    "close": "Close"
+  },
+  "actions": {
+    "viewProjects": "View Projects",
+    "viewAllProjects": "View All Projects",
+    "viewServices": "View Services",
+    "contactMe": "Contact Me",
+    "downloadCv": "Download CV",
+    "bookCall": "Book a Call",
+    "viewAll": "View All",
+    "viewAllSkills": "View All Skills",
+    "getInTouch": "Get In Touch",
+    "readCaseStudy": "Read Case Study",
+    "viewLive": "View Live",
+    "back": "Back",
+    "learnMore": "Learn More"
+  },
+  "home": {
+    "hero": {
+      "eyebrow": "Ahmed Alaydi · Full-Stack Developer",
+      "headline": "I build complete business systems, not just websites.",
+      "headlineAccent": "not just websites.",
+      "role": "Full-Stack Developer & Product Systems Builder",
+      "lead": "Laravel and PHP on the backend. React and Next.js on the frontend. React Native and Flutter on mobile. I design and ship SaaS platforms, ERP and CRM systems, CMS, dashboards, APIs, and mobile apps — built for real businesses and real production load.",
+      "experience": "3+ years of experience",
+      "stack": {
+        "laravel": "Laravel · PHP",
+        "react": "React · Next.js",
+        "next": "TypeScript",
+        "mobile": "React Native · Flutter"
+      },
+      "proof": {
+        "saas": "SaaS Platforms",
+        "erp": "ERP / CRM Systems",
+        "api": "APIs & Architecture",
+        "mobile": "Mobile Applications"
+      },
+      "status": "Available for new engagements",
+      "scrollHint": "Scroll to explore",
+      "headlineV2": "I build production-ready systems for real businesses.",
+      "headlineAccentV2": "real businesses.",
+      "leadV2": "Full-stack developer with 3+ years of experience building Laravel backends, React/Next.js interfaces, mobile apps, dashboards, APIs, SaaS, ERP and CRM platforms.",
+      "badges": {
+        "experience": "3+ Years Experience",
+        "fullstack": "Full-Stack Systems",
+        "stack": "Laravel + React + Mobile",
+        "freelance": "Freelance Product Builder"
+      },
+      "panels": {
+        "api": "API Layer",
+        "apiSub": "Laravel · REST · v3",
+        "dashboard": "Dashboard",
+        "dashboardSub": "Next.js · RSC",
+        "mobile": "Mobile App",
+        "mobileSub": "React Native · iOS/Android",
+        "database": "Database",
+        "databaseSub": "MySQL · indexed",
+        "deploy": "Production Deploy",
+        "deploySub": "CI · Vercel · Railway",
+        "queue": "Queue Worker",
+        "queueSub": "Jobs · retries · cron"
+      }
+    },
+    "systems": {
+      "eyebrow": "What I Build",
+      "heading": "Production systems, end to end.",
+      "lead": "I take products from data model to dashboard to mobile — engineered for reliability, observability, and a clean operator experience.",
+      "items": {
+        "saas": {
+          "title": "SaaS Platforms",
+          "description": "Multi-tenant products with role-based access, billing, notifications, and a clean operator console.",
+          "tags": [
+            "Multi-tenant",
+            "Auth",
+            "Billing"
+          ]
+        },
+        "erp": {
+          "title": "ERP Systems",
+          "description": "Internal operating systems for inventory, invoicing, employees, and reporting — tuned to a real workflow.",
+          "tags": [
+            "Inventory",
+            "Invoicing",
+            "Reports"
+          ]
+        },
+        "crm": {
+          "title": "CRM Systems",
+          "description": "Customer pipelines, lifecycle workflows, and operator dashboards built on top of a clean data model.",
+          "tags": [
+            "Pipelines",
+            "Lifecycle",
+            "Insights"
+          ]
+        },
+        "cms": {
+          "title": "CMS Platforms",
+          "description": "Editorial systems with structured content, media handling, role-aware publishing, and multi-language support.",
+          "tags": [
+            "Content",
+            "Media",
+            "i18n"
+          ]
+        },
+        "dashboard": {
+          "title": "Admin Dashboards",
+          "description": "Operator-grade interfaces with structured navigation, KPIs, audit trails, and role-aware UI.",
+          "tags": [
+            "KPIs",
+            "RBAC",
+            "Audit"
+          ]
+        },
+        "api": {
+          "title": "APIs & Architecture",
+          "description": "Versioned REST APIs, service contracts, queues, and integration layers designed to last.",
+          "tags": [
+            "REST",
+            "Queues",
+            "Integrations"
+          ]
+        },
+        "mobile": {
+          "title": "Mobile Applications",
+          "description": "Cross-platform customer, driver, and operator apps wired into the same production backend.",
+          "tags": [
+            "iOS",
+            "Android",
+            "Realtime"
+          ]
+        },
+        "ecommerce": {
+          "title": "E-Commerce Systems",
+          "description": "Storefronts, catalogs, checkout, payments, and order operations built into one coherent system.",
+          "tags": [
+            "Catalog",
+            "Payments",
+            "Orders"
+          ]
+        },
+        "fullstack": {
+          "title": "Full-Stack Ecosystems",
+          "description": "Complete product ecosystems — dashboard, API, mobile, and integrations — designed and shipped as one.",
+          "tags": [
+            "Web",
+            "Mobile",
+            "API"
+          ]
+        }
+      }
+    },
+    "ecosystem": {
+      "coreLabel": "Product Ecosystem",
+      "coreSub": "One connected system",
+      "hint": "Hover a node to explore the architecture",
+      "sliderEyebrow": "Explore the stack",
+      "sliderHeading": "One architecture, every layer.",
+      "nodes": {
+        "frontend": {
+          "label": "Frontend",
+          "desc": "Next.js & React interfaces — fast, SEO-ready, animated."
+        },
+        "mobile": {
+          "label": "Mobile Apps",
+          "desc": "Customer, driver & admin apps on one backend."
+        },
+        "dashboard": {
+          "label": "Admin Dashboard",
+          "desc": "Operator consoles with KPIs, RBAC & audit trails."
+        },
+        "api": {
+          "label": "Laravel API",
+          "desc": "Versioned REST services, contracts & queues."
+        },
+        "database": {
+          "label": "Database",
+          "desc": "Indexed MySQL schemas engineered to scale."
+        },
+        "integrations": {
+          "label": "Integrations",
+          "desc": "Payments, push, WhatsApp & third-party SDKs."
+        },
+        "erp": {
+          "label": "ERP",
+          "desc": "Inventory, invoicing & reporting systems."
+        },
+        "crm": {
+          "label": "CRM",
+          "desc": "Pipelines, lifecycle & customer insights."
+        },
+        "saas": {
+          "label": "SaaS",
+          "desc": "Multi-tenant products with billing & auth."
+        },
+        "cms": {
+          "label": "CMS",
+          "desc": "Structured content with multi-language support."
+        }
+      }
+    },
+    "mobile": {
+      "eyebrow": "Mobile Experiences",
+      "heading": "One backend. Three native surfaces.",
+      "lead": "The Locate ecosystem ships as a unified system: customer, delivery, and admin apps — all wired into the same Laravel API, push layer, and payment gateway.",
+      "tabs": {
+        "customer": "Customer",
+        "delivery": "Delivery",
+        "admin": "Admin"
+      }
+    },
+    "work": {
+      "eyebrow": "Selected Work",
+      "heading": "Real products. Real customers. In production.",
+      "lead": "A focused selection of systems I have designed, shipped, and operated — across SaaS, ERP, dashboards, mobile, and brand platforms.",
+      "filters": {
+        "all": "All",
+        "saas": "SaaS",
+        "dashboard": "Dashboards",
+        "mobile": "Mobile",
+        "erp": "ERP",
+        "platform": "Platforms",
+        "brand": "Brand"
+      }
+    },
+    "closer": {
+      "eyebrow": "Available for production work",
+      "heading": "Let's engineer your next system.",
+      "lead": "I work with teams and founders who need a production-minded engineer to design, build, and ship the system that powers their business."
+    },
+    "marquee": {
+      "eyebrow": "Trusted stack",
+      "title": "Engineered with production-grade tools"
+    }
+  },
+  "services": {
+    "hero": {
+      "eyebrow": "Services",
+      "heading": "Engineering services for complete business systems.",
+      "lead": "From a single component to a full product ecosystem — frontend, backend, mobile, dashboards, APIs, and deployment. Every engagement is shipped to production with clean architecture and operator-grade tooling."
+    },
+    "items": {
+      "fullstack": {
+        "title": "Full-Stack Systems",
+        "description": "End-to-end product builds: data model, API, dashboard, and mobile — designed and shipped as a single coherent system.",
+        "tags": [
+          "Architecture",
+          "Web + Mobile",
+          "Production"
+        ],
+        "deliver": "Data model, API, dashboard, and mobile app as one shipped system.",
+        "value": "One team owns the whole stack — no integration gaps."
+      },
+      "frontend": {
+        "title": "Frontend Development",
+        "description": "Modern React and Next.js interfaces with TypeScript, Tailwind, smooth motion, accessible patterns, and design-system rigor.",
+        "tags": [
+          "React",
+          "Next.js",
+          "TypeScript"
+        ],
+        "deliver": "Typed React/Next.js UI, a design system, and polished motion.",
+        "value": "Interfaces that feel fast, accessible, and on-brand."
+      },
+      "backend": {
+        "title": "Backend Development",
+        "description": "Laravel and PHP services with clean domain models, queues, role-aware authorization, and well-defined REST contracts.",
+        "tags": [
+          "Laravel",
+          "PHP",
+          "MySQL"
+        ],
+        "deliver": "Laravel domain services, auth, queues, and REST contracts.",
+        "value": "A backend that scales and stays maintainable."
+      },
+      "mobile": {
+        "title": "Mobile Applications",
+        "description": "Cross-platform iOS and Android apps with React Native or Flutter — wired into the same production API as the web.",
+        "tags": [
+          "React Native",
+          "Flutter",
+          "iOS / Android"
+        ],
+        "deliver": "React Native / Flutter apps on iOS and Android.",
+        "value": "Reach customers on every device from one codebase."
+      },
+      "saas": {
+        "title": "SaaS Platforms",
+        "description": "Multi-tenant products with subscriptions, billing, role-based access, notifications, and a clean operator console.",
+        "tags": [
+          "Multi-tenant",
+          "Billing",
+          "Auth"
+        ],
+        "deliver": "Multi-tenant app, billing, roles, and an operator console.",
+        "value": "A product you can sell, scale, and operate from day one."
+      },
+      "erp": {
+        "title": "ERP Systems",
+        "description": "Internal operating systems for inventory, invoicing, employees, accounting, and reporting — built around your real workflow.",
+        "tags": [
+          "Inventory",
+          "Invoicing",
+          "Reports"
+        ],
+        "deliver": "Inventory, invoicing, accounting, and reporting modules.",
+        "value": "Run operations from one system instead of spreadsheets."
+      },
+      "crm": {
+        "title": "CRM Systems",
+        "description": "Customer pipelines, lifecycle automation, and operator dashboards on top of a clean, queryable data model.",
+        "tags": [
+          "Pipelines",
+          "Automation",
+          "Reports"
+        ],
+        "deliver": "Pipelines, lifecycle automation, and operator dashboards.",
+        "value": "Never lose a lead or a follow-up again."
+      },
+      "cms": {
+        "title": "CMS Platforms",
+        "description": "Editorial systems with structured content, media management, role-aware publishing, and multi-language support.",
+        "tags": [
+          "Content",
+          "Media",
+          "i18n"
+        ],
+        "deliver": "Structured content, media, roles, and multi-language publishing.",
+        "value": "Your team ships content without touching code."
+      },
+      "dashboard": {
+        "title": "Admin Dashboards",
+        "description": "Operator-grade dashboards with KPIs, filters, exports, audit trails, and role-aware UI — built for daily real use.",
+        "tags": [
+          "KPIs",
+          "RBAC",
+          "Audit"
+        ],
+        "deliver": "KPIs, filters, exports, audit trails, and role-aware UI.",
+        "value": "Operators get clarity and control in real time."
+      },
+      "api": {
+        "title": "API Development",
+        "description": "Versioned REST APIs, service contracts, webhooks, queues, and integration layers designed for long-term evolution.",
+        "tags": [
+          "REST",
+          "Webhooks",
+          "Queues"
+        ],
+        "deliver": "Versioned REST APIs, webhooks, queues, and integration layers.",
+        "value": "One contract that powers web, mobile, and partners."
+      },
+      "ecommerce": {
+        "title": "E-Commerce Platforms",
+        "description": "Storefronts, catalogs, checkout, payments, and order operations — built as one system, not stitched plugins.",
+        "tags": [
+          "Catalog",
+          "Payments",
+          "Orders"
+        ],
+        "deliver": "Catalog, checkout, payments, and order operations.",
+        "value": "Sell online with a system built to grow, not a plugin pile."
+      },
+      "ai": {
+        "title": "AI Integrations",
+        "description": "LLM features integrated into real product surfaces — chat, automation, content tools — with cost-aware design and prompt caching.",
+        "tags": [
+          "LLM",
+          "Automation",
+          "Cost-aware"
+        ],
+        "deliver": "LLM features wired into real product surfaces, cost-aware.",
+        "value": "Automation and intelligence where it actually moves metrics."
+      },
+      "performance": {
+        "title": "Performance Optimization",
+        "description": "Audits and targeted fixes across frontend, backend, and database — bundle size, query plans, indexing, caching, image pipelines.",
+        "tags": [
+          "Bundle",
+          "DB",
+          "Caching"
+        ],
+        "deliver": "Audits and targeted fixes across frontend, backend, and database.",
+        "value": "Faster pages, cheaper infra, happier users."
+      },
+      "deployment": {
+        "title": "Deployment & Production Setup",
+        "description": "Production hosting, environment configuration, CI builds, error logging, and zero-secret-in-source pipelines.",
+        "tags": [
+          "CI/CD",
+          "Hosting",
+          "Observability"
+        ],
+        "deliver": "Hosting, CI builds, env config, logging, and safe rollbacks.",
+        "value": "Ship safely and sleep through the night."
+      }
+    },
+    "closer": {
+      "eyebrow": "Start a project",
+      "heading": "Have a system in mind? Let's scope it.",
+      "lead": "Tell me about the product, the users, and where you're stuck. I'll come back with a concrete plan and timeline."
+    },
+    "v2": {
+      "hero": {
+        "badge": "Product Engineering Services",
+        "title1": "Services for",
+        "title2": "complete product systems.",
+        "lead": "Frontend, backend, mobile, dashboards, APIs, and deployment — engineered as one system and shipped to production. Pick a single service, or let me build the whole ecosystem."
+      },
+      "counters": {
+        "services": "Services",
+        "years": "Years shipping",
+        "ecosystems": "End-to-end ecosystems",
+        "production": "Shipped to production"
+      },
+      "sectionHeaders": {
+        "servicesEyebrow": "Services",
+        "servicesTitle": "What I can build for you",
+        "ecoEyebrow": "End-to-End",
+        "ecoTitle": "Complete systems I deliver",
+        "processEyebrow": "Process",
+        "processTitle": "How a project ships"
+      },
+      "eco": {
+        "items": {
+          "dashboardApiMobile": {
+            "title": "Dashboard + API + Mobile",
+            "body": "An admin dashboard, a REST API, and a native mobile app — sharing one backend and one source of truth."
+          },
+          "saas": {
+            "title": "SaaS Platform",
+            "body": "Multi-tenant product with subscriptions, billing, roles, and an operator console, ready to sell."
+          },
+          "erp": {
+            "title": "ERP Workflow",
+            "body": "Inventory, invoicing, and reporting modeled around how your operation actually runs."
+          },
+          "crm": {
+            "title": "CRM Pipeline",
+            "body": "Lead pipelines, lifecycle automation, and activity timelines on a clean data model."
+          },
+          "cms": {
+            "title": "CMS + Admin Panel",
+            "body": "Structured content, media, and role-aware publishing behind an operator-grade panel."
+          },
+          "ecommerce": {
+            "title": "E-commerce + Orders + Payments",
+            "body": "Catalog, checkout, payment rails, and order operations built as one coherent system."
+          }
+        }
+      },
+      "process": {
+        "items": {
+          "discovery": {
+            "title": "Discovery",
+            "body": "Frame the problem, users, and constraints before a line of code."
+          },
+          "architecture": {
+            "title": "Architecture",
+            "body": "Model the system — data, contracts, and boundaries — up front."
+          },
+          "ui": {
+            "title": "UI System",
+            "body": "Design-token components and flows that scale across the product."
+          },
+          "backend": {
+            "title": "Backend Logic",
+            "body": "Domain services, auth, and a data layer built for production load."
+          },
+          "api": {
+            "title": "API Integration",
+            "body": "Versioned REST contracts wiring every client to one backend."
+          },
+          "mobile": {
+            "title": "Mobile Integration",
+            "body": "Native apps consuming the same API as the web dashboard."
+          },
+          "testing": {
+            "title": "Testing",
+            "body": "Verify behavior, edge cases, and performance before release."
+          },
+          "deployment": {
+            "title": "Deployment",
+            "body": "CI, env scoping, observability, and safe rollbacks to production."
+          }
+        }
+      },
+      "ui": {
+        "prev": "Previous",
+        "next": "Next",
+        "deliver": "I deliver",
+        "value": "Business value",
+        "discuss": "Discuss this service",
+        "dragHint": "Drag or use arrows"
+      }
+    },
+    "blocks": {
+      "eyebrow": "Engineering Disciplines",
+      "title": "Five disciplines, one production-ready system.",
+      "backend": {
+        "title": "Backend Engineering",
+        "desc": "Robust services, clean domain models, queues, and REST contracts built to scale under real production load."
+      },
+      "frontend": {
+        "title": "Frontend Systems",
+        "desc": "Typed React and Next.js interfaces with design-system rigor, smooth motion, and accessible patterns."
+      },
+      "mobile": {
+        "title": "Mobile Applications",
+        "desc": "Cross-platform iOS and Android apps wired into the same production backend as the web."
+      },
+      "cloud": {
+        "title": "Cloud Infrastructure",
+        "desc": "Containerized deployments, CI/CD pipelines, observability, and infrastructure as code on AWS."
+      },
+      "architecture": {
+        "title": "Software Architecture",
+        "desc": "Domain-driven boundaries, event-driven flows, and service contracts designed for long-term evolution."
+      }
+    }
+  },
+  "about": {
+    "meta": {
+      "title": "About — Ahmed Alaydi",
+      "description": "Engineering background, principles, and the systems Ahmed Alaydi designs and ships — SaaS, ERP, CRM, dashboards, APIs, and mobile."
+    },
+    "hero": {
+      "eyebrow": "About Me",
+      "heading": "Full-stack engineering with a production mindset.",
+      "lead": "I build scalable business platforms with Laravel, React, and Next.js, focusing on clean architecture, responsive interfaces, and systems that are ready for real users."
+    },
+    "profile": {
+      "eyebrow": "Profile",
+      "heading": "Building digital systems that stay useful after launch.",
+      "p1": "I work across the stack, from Laravel APIs and MySQL schemas to React and Next.js interfaces. My focus is building systems that are easy to use, easy to extend, and stable in real production workflows.",
+      "p2": "I have worked on admin platforms, CMS dashboards, booking experiences, corporate websites, and business tools where design quality and backend structure both matter."
+    },
+    "focus": [
+      "Laravel architecture",
+      "Next.js systems",
+      "React UI engineering",
+      "API-first workflows"
+    ],
+    "principles": {
+      "architecture": {
+        "title": "Clean Architecture",
+        "description": "I structure applications so UI, APIs, services, and data layers stay maintainable as the product grows."
+      },
+      "performance": {
+        "title": "Performance Mindset",
+        "description": "From frontend rendering to database queries, I look for practical optimizations that improve real user experience."
+      },
+      "production": {
+        "title": "Production Readiness",
+        "description": "I build with authentication, reliability, permissions, deployment, and long-term operations in mind."
+      },
+      "outcomes": {
+        "title": "Business Outcomes",
+        "description": "Dashboards, CMS platforms, and APIs are designed around workflows, not just visual screens."
+      }
+    },
+    "highlights": {
+      "heading": "Experience Highlights",
+      "items": [
+        "Admin dashboards and role-based systems",
+        "Laravel APIs with MySQL data modeling",
+        "Dynamic CMS platforms and media workflows",
+        "Responsive Next.js and React interfaces",
+        "Payment, notification, and third-party integrations"
+      ]
+    },
+    "stack": {
+      "title": "Core Stack",
+      "subtitle": "Laravel + React + Next.js",
+      "frontend": "Frontend systems",
+      "backend": "Backend data flows",
+      "secure": "Secure workflows"
+    },
+    "exploreCta": "Explore Projects",
+    "contactCta": "Let's talk",
+    "expBadge": {
+      "years": "3+",
+      "label": "Years"
+    },
+    "positioning": {
+      "role": "Full-Stack Developer",
+      "tag1": "Laravel Backend",
+      "tag2": "React / Next.js",
+      "tag3": "React Native · Flutter",
+      "tag4": "SaaS · ERP · CRM · APIs"
+    }
+  },
+  "skills": {
+    "meta": {
+      "title": "Skills — Engineering Capabilities",
+      "description": "An engineering capability profile: full-stack architecture, mobile apps, APIs, dashboards, deployment, performance, and the stack behind it (Laravel, Next.js, React Native, TypeScript)."
+    },
+    "hero": {
+      "eyebrow": "Engineering Capabilities",
+      "heading": "A complete engineering profile, not a stack list.",
+      "lead": "From data models to dashboards, mobile apps to deployment — these are the capabilities I bring to production systems every day."
+    },
+    "sections": {
+      "capabilities": "What I do",
+      "stack": "Stack",
+      "approach": "Approach"
+    },
+    "hero2": {
+      "badge": "Engineering Capability Profile",
+      "headline": "I build production systems,",
+      "headlineBreak": "not just websites.",
+      "lead": "A full-stack engineer focused on shipping SaaS platforms, ERP / CRM systems, dashboards, mobile apps, and the APIs that hold them together."
+    },
+    "stats": {
+      "systemsShipped": "Systems shipped",
+      "mobileApps": "Mobile apps",
+      "stackDepth": "Stack depth",
+      "yearsEngineering": "Years engineering",
+      "stackDepthValue": "14 core"
+    },
+    "sectionHeaders": {
+      "pillarsEyebrow": "Core Engineering Capabilities",
+      "pillarsTitle": "What I bring to a system",
+      "stackEyebrow": "Stack",
+      "stackTitle": "The technologies I build with",
+      "stackAll": "All Stacks",
+      "stackProficiency": "Proficiency",
+      "architectureEyebrow": "System Architecture",
+      "architectureTitle": "Clients, API, data, integrations.",
+      "architectureNote": "One source of truth",
+      "mobileEyebrow": "Mobile Development",
+      "mobileTitle": "Native experiences across the ecosystem",
+      "mindsetEyebrow": "Engineering Mindset",
+      "mindsetTitle": "How I think about systems"
+    },
+    "architecture": {
+      "clients": "Clients",
+      "integrations": "Integrations",
+      "apiCore": "REST API · Laravel",
+      "sourceOfTruth": "Single source of truth",
+      "auth": "Auth",
+      "domain": "Domain",
+      "webhooks": "Webhooks",
+      "db": "MySQL · indexed · transactional"
+    },
+    "mobile": {
+      "eyebrow": "Cross-Platform",
+      "heading": "React Native + Flutter",
+      "lead": "Cross-platform apps that share API contracts with the web dashboard. Real-time state, native push, payments, geolocation, and biometric flows — wired into the same backend that powers the business.",
+      "cta": "See the Locate ecosystem"
+    },
+    "cta": {
+      "heading": "Need a system engineered end-to-end?",
+      "lead": "Dashboard, mobile apps, APIs, deployment — designed as one cohesive system.",
+      "primary": "Start a project",
+      "secondary": "View case studies"
+    },
+    "v2": {
+      "hero": {
+        "badge": "Engineering Capability Dashboard",
+        "title1": "I build complete systems —",
+        "title2": "frontend, backend, mobile, APIs.",
+        "lead": "Three-plus years shipping full-stack platforms: SaaS, ERP, CRM, dashboards, and the mobile apps and APIs that connect them. I don't hand off pieces — I own the whole system end to end."
+      },
+      "stats": {
+        "years": "Years building",
+        "systems": "Systems shipped",
+        "apps": "Mobile apps",
+        "domains": "Domains covered"
+      },
+      "core": {
+        "eyebrow": "Core Capabilities",
+        "title": "What I engineer end to end",
+        "items": {
+          "frontend": {
+            "title": "Frontend Engineering",
+            "body": "Composable React & Next.js interfaces with strict typing, motion, and design systems built to scale."
+          },
+          "backend": {
+            "title": "Backend Architecture",
+            "body": "Laravel services, policies, queues, and event-driven domains engineered for real production load."
+          },
+          "mobile": {
+            "title": "Mobile Applications",
+            "body": "React Native & Flutter apps on iOS and Android, wired to the same live backend as the web."
+          },
+          "api": {
+            "title": "API Engineering",
+            "body": "Versioned, authenticated REST APIs that serve web, mobile, and partner clients from one contract."
+          },
+          "dashboards": {
+            "title": "Dashboard Systems",
+            "body": "Operator-grade admin panels: fast tables, role-aware actions, approvals, exports, and reporting."
+          },
+          "saas": {
+            "title": "SaaS Platforms",
+            "body": "Multi-tenant products with billing, onboarding, and the operational tooling that runs them."
+          },
+          "erpcrm": {
+            "title": "ERP / CRM Systems",
+            "body": "Inventory, POS, pipelines, and reporting tuned for real operational throughput."
+          },
+          "perf": {
+            "title": "Performance Optimization",
+            "body": "Indexed queries, lean bundles, and cached endpoints — fast by default and always measured."
+          }
+        }
+      },
+      "stack": {
+        "eyebrow": "Tech Stack",
+        "title": "The tools behind the systems",
+        "cat": {
+          "frontend": "Frontend",
+          "backend": "Backend",
+          "mobile": "Mobile",
+          "database": "Database",
+          "devops": "DevOps / Deploy",
+          "business": "Business Systems"
+        }
+      },
+      "mobileSlider": {
+        "eyebrow": "Mobile Engineering",
+        "title": "One backend, every app surface",
+        "items": {
+          "customer": {
+            "title": "Customer Apps",
+            "body": "Browse, checkout, and real-time order tracking in a localized, native interface."
+          },
+          "delivery": {
+            "title": "Delivery Apps",
+            "body": "Live assignment, native maps handoff, and proof-of-delivery capture for couriers."
+          },
+          "admin": {
+            "title": "Admin Apps",
+            "body": "KPI cards, an approval inbox, a broadcast composer, and biometric unlock."
+          },
+          "backend": {
+            "title": "Backend Integration",
+            "body": "Shared REST contracts with the web dashboard — one source of truth for every client."
+          },
+          "realtime": {
+            "title": "Real-Time Systems",
+            "body": "Push, sockets, and webhooks keep every client reconciled to live state."
+          },
+          "push": {
+            "title": "Push Notifications",
+            "body": "Targeted FCM delivery for orders, alerts, and lifecycle events."
+          },
+          "payments": {
+            "title": "Payments",
+            "body": "Native checkout and gateway integration with verified webhook settlement."
+          },
+          "maps": {
+            "title": "Maps / Geolocation",
+            "body": "Live tracking, routing, and location handoff across delivery flows."
+          }
+        }
+      },
+      "mindset": {
+        "eyebrow": "Engineering Mindset",
+        "title": "How I build to last",
+        "items": {
+          "maintainability": {
+            "title": "Maintainability",
+            "body": "Code the next engineer can change without fear."
+          },
+          "clean": {
+            "title": "Clean Architecture",
+            "body": "Explicit boundaries between domain, application, and infrastructure."
+          },
+          "scalable": {
+            "title": "Scalable Systems",
+            "body": "Right-sized today, designed so growth never forces a rewrite."
+          },
+          "apifirst": {
+            "title": "API-First Thinking",
+            "body": "The API is the product; web, mobile, and partners all consume it."
+          },
+          "deployment": {
+            "title": "Production Deployment",
+            "body": "Ship-able from day one — CI, env scoping, migrations, observability."
+          },
+          "optimization": {
+            "title": "Optimization Mindset",
+            "body": "Measure, profile, then optimize. Never premature, always intentional."
+          },
+          "reusable": {
+            "title": "Reusable Components",
+            "body": "Primitives and contracts that compose across products."
+          }
+        }
+      },
+      "ui": {
+        "prev": "Previous",
+        "next": "Next",
+        "proficiency": "Proficiency",
+        "dragHint": "Drag or use arrows"
+      }
+    }
+  },
+  "projects": {
+    "meta": {
+      "title": "Projects — Engineering Case Studies",
+      "description": "Premium case studies of SaaS platforms, ERP / CRM systems, dashboards, mobile apps, APIs and CMS architectures shipped to production."
+    },
+    "hero": {
+      "eyebrow": "Case Studies",
+      "heading": "Production systems, documented end to end.",
+      "lead": "A selection of platforms, dashboards, mobile apps, and APIs I have designed, built and shipped — with the architecture and decisions behind them."
+    },
+    "filters": {
+      "all": "All",
+      "saas": "SaaS",
+      "dashboard": "Dashboards",
+      "mobile": "Mobile",
+      "erp": "ERP",
+      "platform": "Platforms",
+      "brand": "Brand"
+    },
+    "labels": {
+      "readCaseStudy": "Read case study",
+      "viewLive": "Live",
+      "role": "Role",
+      "stack": "Stack",
+      "year": "Year",
+      "type": "Type",
+      "overview": "Overview",
+      "challenge": "Challenge",
+      "solution": "Solution",
+      "outcome": "Outcome",
+      "highlights": "Highlights",
+      "features": "Features",
+      "techStack": "Tech stack",
+      "backToProjects": "Back to projects",
+      "viewProject": "View project",
+      "noResults": "No projects match this filter.",
+      "tryAnother": "Try another category or browse all.",
+      "archiveBadge": "Project Archive",
+      "systemsCount": "{count} systems",
+      "archiveHeading": "Premium engineering case studies.",
+      "archiveLead": "A curated archive of production SaaS platforms, ERP / CRM systems, dashboards, mobile apps, APIs and CMS architectures — each documented as a full case study.",
+      "statSystems": "Systems",
+      "statMobile": "Mobile apps",
+      "statDashboards": "Dashboards",
+      "statFullstack": "Full-stack",
+      "caseStudy": "Case Study",
+      "viewFullCaseStudy": "View full case study",
+      "mobileExperience": "Mobile Experience",
+      "mobileHeading": "One ecosystem. Three native surfaces.",
+      "mobileLead": "Customer, delivery, and admin apps share a single API and notification fabric — each tuned to its user's job.",
+      "appArchitecture": "App Architecture",
+      "appArchitectureText": "Mobile clients consume a single Laravel REST API, push state through Firebase, and reconcile orders against the same admin dashboard — one source of truth, three native experiences.",
+      "sliderView": "Cinematic",
+      "gridView": "Grid",
+      "prevProject": "Previous project",
+      "nextProject": "Next project",
+      "dragHint": "Drag, swipe, or use ← → to explore",
+      "projectType": "Project",
+      "exploreShowcase": "Featured Showcase",
+      "experienceBadge": "Interactive Exhibition",
+      "experienceHeading": "An exhibition of engineering.",
+      "experienceLead": "Thirteen production systems — not filtered, but experienced. Move between three viewing modes and let the work come to you.",
+      "modeCinematic": "Cinematic",
+      "modeTimeline": "Timeline",
+      "modeOrbital": "Orbital",
+      "modeCinematicDesc": "Spotlight reel",
+      "modeTimelineDesc": "The build journey",
+      "modeOrbitalDesc": "Gravity showcase",
+      "scrollToExplore": "Scroll to explore",
+      "nowFeatured": "Now featuring",
+      "viewMode": "View mode",
+      "projectsCount": "{count} projects"
+    },
+    "caseStudy": {
+      "backToArchive": "Back to Archive",
+      "badge": "Case Study",
+      "viewLive": "View live system",
+      "source": "Source",
+      "metaRole": "Role",
+      "metaTimeline": "Timeline",
+      "metaIndustry": "Industry",
+      "metaStatus": "Status",
+      "overviewEyebrow": "Overview",
+      "overviewTitle": "What this system is",
+      "problemEyebrow": "The Problem",
+      "problemTitle": "What we needed to solve",
+      "solutionEyebrow": "The Solution",
+      "solutionTitle": "How we shipped it",
+      "architectureEyebrow": "Architecture",
+      "architectureTitle": "How the system is wired",
+      "layer": "Layer",
+      "stackEyebrow": "Tech Stack",
+      "stackTitle": "Engineering choices",
+      "stackFrontend": "Frontend",
+      "stackBackend": "Backend",
+      "stackMobile": "Mobile",
+      "stackIntegrations": "Integrations",
+      "stackInfrastructure": "Infrastructure",
+      "mobileAppsEyebrow": "Mobile Applications",
+      "mobileAppsTitle": "The mobile ecosystem",
+      "backendEyebrow": "Backend Systems",
+      "backendTitle": "Services and data",
+      "apisEyebrow": "APIs & Integrations",
+      "apisTitle": "External surfaces",
+      "integration": "Integration",
+      "dashboardEyebrow": "Dashboard Structure",
+      "dashboardTitle": "What admins control",
+      "challengesEyebrow": "Challenges Solved",
+      "challengesTitle": "Hard problems, handled",
+      "challenge": "Challenge",
+      "resolution": "Resolution",
+      "performanceEyebrow": "Performance",
+      "performanceTitle": "Built to stay fast",
+      "uiuxEyebrow": "UI / UX",
+      "uiuxTitle": "Design and interaction",
+      "productionEyebrow": "Production Readiness",
+      "productionTitle": "Ready to ship and operate",
+      "galleryEyebrow": "Gallery",
+      "galleryTitle": "In the wild",
+      "featuresEyebrow": "System Features",
+      "featuresTitle": "What it does",
+      "decisionsEyebrow": "Technical Decisions",
+      "decisionsTitle": "Why we chose what we chose",
+      "decision": "Decision",
+      "outcomeEyebrow": "Outcome",
+      "outcomeTitle": "Results",
+      "continueExploring": "Continue exploring",
+      "otherCaseStudies": "Other case studies",
+      "viewArchive": "View archive",
+      "ctaHeading": "Building something similar?",
+      "ctaLead": "Let's scope your platform — dashboard, mobile apps, APIs, the full stack.",
+      "ctaButton": "Start a project",
+      "ecosystemBadge": "Mobile Ecosystem Case Study",
+      "systemShowcaseEyebrow": "System / Dashboard",
+      "systemShowcaseTitle": "The control plane",
+      "mobileShowcaseEyebrow": "Mobile Applications",
+      "mobileShowcaseTitle": "Companion apps",
+      "ecosystemArchEyebrow": "Ecosystem Architecture",
+      "ecosystemArchTitle": "How everything connects",
+      "jumpTo": "Jump to section",
+      "impact": "Impact",
+      "before": "Before",
+      "after": "After",
+      "dataFlow": "Data flow",
+      "close": "Close",
+      "expand": "Expand",
+      "nav": {
+        "overview": "Overview",
+        "problem": "Problem",
+        "solution": "Solution",
+        "architecture": "Architecture",
+        "stack": "Stack",
+        "screens": "Screens",
+        "features": "Features",
+        "challenges": "Challenges",
+        "results": "Results"
+      }
+    }
+  },
+  "contact": {
+    "meta": {
+      "title": "Contact — Ahmed Alaydi",
+      "description": "Get in touch to scope a SaaS, ERP, CRM, dashboard, API, or mobile app project. Typical reply within 24 hours."
+    },
+    "hero": {
+      "available": "Available for new engagements",
+      "heading": "Let's engineer something",
+      "headingAccent": "worth shipping.",
+      "lead": "SaaS, ERP, CRM, dashboards, APIs, mobile apps — tell me what you're building and I'll come back with a clear next step."
+    },
+    "facts": {
+      "response": "Response time",
+      "responseValue": "Within 24h",
+      "remote": "Working remote",
+      "remoteValue": "Worldwide",
+      "location": "Based in",
+      "locationValue": "Egypt · GMT+2",
+      "status": "Status",
+      "statusValue": "Taking new work"
+    },
+    "methods": {
+      "email": "Email",
+      "whatsapp": "WhatsApp",
+      "github": "GitHub",
+      "linkedin": "LinkedIn",
+      "primary": "Primary",
+      "instant": "Instant",
+      "code": "Code",
+      "network": "Network",
+      "open": "Open"
+    },
+    "cv": {
+      "title": "Download CV",
+      "description": "A condensed engineering profile — stack, systems, and shipped work.",
+      "button": "Download PDF"
+    },
+    "share": {
+      "eyebrow": "What to share",
+      "heading": "Give me enough to give you a real answer",
+      "items": [
+        "The business goal and the outcome you want",
+        "Current stack, if there's one already",
+        "Timeline and rough budget envelope",
+        "Links to anything relevant (Figma, docs, repos)"
+      ]
+    },
+    "form": {
+      "eyebrow": "Send a message",
+      "heading": "Tell me about the project",
+      "name": "Full name",
+      "email": "Email",
+      "subject": "Subject",
+      "message": "Project details",
+      "privacy": "I'll only use your email to reply.",
+      "send": "Send message",
+      "sending": "Sending…",
+      "required": "Required",
+      "invalidEmail": "Looks invalid",
+      "minMessage": "At least 10 characters",
+      "sendFailed": "Couldn't send. Please try again or reach out via WhatsApp.",
+      "successHeading": "Message landed.",
+      "successLead": "Thanks for reaching out — I'll come back within 24 hours with a clear next step or a few good questions.",
+      "sendAnother": "Send another",
+      "pingWhatsApp": "Ping on WhatsApp"
+    }
+  },
+  "footer": {
+    "tagline": "Full-Stack Developer building Laravel, React, Next.js, and mobile systems for production business workflows.",
+    "rights": "All rights reserved.",
+    "signature": "Clean architecture · Production systems"
+  }
+}

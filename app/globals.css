@@ -1,0 +1,470 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "animate.css/animate.min.css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+  Cinematic Software-Studio — design tokens
+  Near-black base, electric emerald accent (#00FF88 / #00D26A).
+  Dark mode is the cinematic showcase; light mode kept clean with emerald accent.
+  NOTE: --glow-cyan / --beam names are kept for back-compat but now resolve to
+  emerald so every existing reference recolors automatically.
+*/
+
+:root {
+  /* Light mode: clean technical white, emerald accent */
+  --background: oklch(0.99 0.004 160);
+  --foreground: oklch(0.20 0.02 165);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.20 0.02 165);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.20 0.02 165);
+  --primary: oklch(0.64 0.17 159);
+  --primary-foreground: oklch(0.99 0.01 160);
+  --secondary: oklch(0.96 0.006 160);
+  --secondary-foreground: oklch(0.22 0.02 165);
+  --muted: oklch(0.945 0.006 160);
+  --muted-foreground: oklch(0.48 0.015 165);
+  --accent: oklch(0.70 0.16 160);
+  --accent-foreground: oklch(0.16 0.03 165);
+  --destructive: oklch(0.6 0.24 27);
+  --destructive-foreground: oklch(0.98 0 0);
+  --border: oklch(0.9 0.008 160);
+  --input: oklch(0.92 0.008 160);
+  --ring: oklch(0.64 0.17 159);
+  --radius: 0.625rem;
+
+  /* Ambient surfaces — used by background system + glass cards */
+  --surface-1: oklch(0.99 0 0 / 0.6);
+  --surface-2: oklch(0.97 0.004 160 / 0.45);
+  --grid-line: oklch(0.5 0.06 160 / 0.08);
+  --glow-cyan: oklch(0.78 0.2 160 / 0.2);
+  --glow-emerald: oklch(0.78 0.2 160 / 0.2);
+  --glow-violet: oklch(0.68 0.13 175 / 0.12);
+  --beam: oklch(0.72 0.18 160 / 0.22);
+
+  --chart-1: oklch(0.64 0.17 159);
+  --chart-2: oklch(0.72 0.16 165);
+  --chart-3: oklch(0.6 0.14 185);
+  --chart-4: oklch(0.78 0.16 130);
+  --chart-5: oklch(0.7 0.15 145);
+
+  --sidebar: oklch(0.99 0.004 160);
+  --sidebar-foreground: oklch(0.20 0.02 165);
+  --sidebar-primary: oklch(0.64 0.17 159);
+  --sidebar-primary-foreground: oklch(0.99 0.01 160);
+  --sidebar-accent: oklch(0.96 0.006 160);
+  --sidebar-accent-foreground: oklch(0.22 0.02 165);
+  --sidebar-border: oklch(0.9 0.008 160);
+  --sidebar-ring: oklch(0.64 0.17 159);
+}
+
+.dark {
+  /* Cinematic near-black base (#050505 / #0A0A0A / #101010) */
+  --background: oklch(0.135 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.175 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.165 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.86 0.23 158);
+  --primary-foreground: oklch(0.16 0.04 160);
+  --secondary: oklch(0.21 0 0);
+  --secondary-foreground: oklch(0.96 0 0);
+  --muted: oklch(0.22 0 0);
+  --muted-foreground: oklch(0.70 0.005 160);
+  --accent: oklch(0.86 0.23 158);
+  --accent-foreground: oklch(0.16 0.04 160);
+  --destructive: oklch(0.6 0.22 27);
+  --destructive-foreground: oklch(0.985 0 0);
+  --border: oklch(1 0 0 / 0.09);
+  --input: oklch(1 0 0 / 0.12);
+  --ring: oklch(0.86 0.23 158);
+
+  --surface-1: oklch(0.18 0 0 / 0.6);
+  --surface-2: oklch(0.22 0 0 / 0.45);
+  --grid-line: oklch(0.85 0.18 160 / 0.05);
+  --glow-cyan: oklch(0.86 0.22 158 / 0.28);
+  --glow-emerald: oklch(0.86 0.22 158 / 0.28);
+  --glow-violet: oklch(0.7 0.16 172 / 0.16);
+  --beam: oklch(0.86 0.22 158 / 0.32);
+
+  --chart-1: oklch(0.86 0.23 158);
+  --chart-2: oklch(0.78 0.18 165);
+  --chart-3: oklch(0.7 0.15 185);
+  --chart-4: oklch(0.82 0.18 135);
+  --chart-5: oklch(0.74 0.16 145);
+
+  --sidebar: oklch(0.155 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.86 0.23 158);
+  --sidebar-primary-foreground: oklch(0.16 0.04 160);
+  --sidebar-accent: oklch(0.21 0 0);
+  --sidebar-accent-foreground: oklch(0.96 0 0);
+  --sidebar-border: oklch(1 0 0 / 0.09);
+  --sidebar-ring: oklch(0.86 0.23 158);
+}
+
+@theme inline {
+  --font-sans: "Inter", "Inter Fallback", system-ui, sans-serif;
+  --font-mono: "Geist Mono", "Geist Mono Fallback", ui-monospace, monospace;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+
+  /* Motion design tokens */
+  --ease-out-cinema: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out-cinema: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --duration-fast: 180ms;
+  --duration-base: 320ms;
+  --duration-slow: 520ms;
+  --duration-cinema: 900ms;
+
+  /* Cinematic shadows */
+  --shadow-elevated: 0 24px 70px -20px oklch(0 0 0 / 0.45), 0 8px 24px -12px oklch(0 0 0 / 0.3);
+  --shadow-glow-cyan: 0 0 40px -8px var(--glow-cyan);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "ss01", "cv11";
+  }
+  /* RTL adjustments — Arabic-aware */
+  [dir="rtl"] {
+    font-family: "Inter", "Noto Sans Arabic", "Tajawal", system-ui, sans-serif;
+  }
+  ::selection {
+    background: oklch(0.86 0.22 158 / 0.32);
+    color: var(--foreground);
+  }
+}
+
+/* Reusable motion keyframes used by both CSS utilities and as fallbacks */
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes slide-in-left {
+  from { opacity: 0; transform: translateX(-16px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes beam-sweep {
+  0% { transform: translateX(-50%) translateY(-50%) rotate(0deg); opacity: 0; }
+  20% { opacity: 0.6; }
+  100% { transform: translateX(-50%) translateY(-50%) rotate(360deg); opacity: 0; }
+}
+@keyframes grid-drift {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(-12px, 8px, 0); }
+}
+@keyframes particle-drift {
+  0% { transform: translate3d(0, 0, 0); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translate3d(var(--dx, 40px), var(--dy, -120px), 0); opacity: 0; }
+}
+@keyframes glow-pulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.85; }
+}
+
+/* Page mount: subtle cinematic reveal on route change */
+@keyframes page-mount {
+  from { opacity: 0; transform: translate3d(0, 8px, 0); filter: blur(2px); }
+  to   { opacity: 1; transform: translate3d(0, 0, 0); filter: blur(0); }
+}
+.page-mount { animation: page-mount 0.55s var(--ease-out-cinema) both; will-change: opacity, transform, filter; }
+
+.animate-fade-in-up { animation: fade-in-up 0.6s var(--ease-out-cinema) forwards; }
+.animate-fade-in { animation: fade-in 0.5s var(--ease-out-cinema) forwards; }
+.animate-slide-in-left { animation: slide-in-left 0.5s var(--ease-out-cinema) forwards; }
+
+.animation-delay-100 { animation-delay: 100ms; }
+.animation-delay-200 { animation-delay: 200ms; }
+.animation-delay-300 { animation-delay: 300ms; }
+.animation-delay-400 { animation-delay: 400ms; }
+.animation-delay-500 { animation-delay: 500ms; }
+
+/* Background system primitives */
+.bg-grid {
+  background-image:
+    linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+  background-size: 56px 56px;
+}
+.bg-grid-fine {
+  background-image:
+    linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+.mask-radial {
+  -webkit-mask-image: radial-gradient(ellipse at center, black 0%, transparent 75%);
+          mask-image: radial-gradient(ellipse at center, black 0%, transparent 75%);
+}
+.mask-fade-bottom {
+  -webkit-mask-image: linear-gradient(to bottom, black 0%, black 70%, transparent 100%);
+          mask-image: linear-gradient(to bottom, black 0%, black 70%, transparent 100%);
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+ * Premium soft elevation — replaces heavy black shadows on product/project
+ * cards. Light mode uses a soft neutral lift with a faint cyan ambient glow
+ * (never dirty black); dark mode keeps gentle depth with a subtle cyan halo.
+ * ────────────────────────────────────────────────────────────────────────── */
+.shadow-soft {
+  box-shadow:
+    0 18px 48px -26px oklch(0.5 0.05 250 / 0.20),
+    0 4px 14px -10px oklch(0.5 0.05 250 / 0.10);
+}
+.dark .shadow-soft {
+  box-shadow:
+    0 26px 66px -34px oklch(0 0 0 / 0.5),
+    0 6px 22px -14px oklch(0.7 0.16 230 / 0.10);
+}
+.shadow-soft-image {
+  box-shadow: 0 16px 44px -28px oklch(0.5 0.05 250 / 0.22);
+}
+.dark .shadow-soft-image {
+  box-shadow: 0 22px 58px -32px oklch(0 0 0 / 0.45);
+}
+.shadow-soft-hover {
+  box-shadow:
+    0 26px 64px -30px oklch(0.6 0.12 220 / 0.28),
+    0 0 0 1px oklch(0.7 0.14 210 / 0.10),
+    0 0 38px -14px oklch(0.7 0.15 210 / 0.22);
+}
+.dark .shadow-soft-hover {
+  box-shadow:
+    0 34px 84px -38px oklch(0 0 0 / 0.55),
+    0 0 0 1px oklch(0.8 0.16 210 / 0.14),
+    0 0 44px -12px oklch(0.78 0.16 215 / 0.24);
+}
+
+/* Glass surfaces */
+.glass {
+  background: var(--surface-1);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  border: 1px solid var(--border);
+}
+.glass-strong {
+  background: var(--surface-2);
+  backdrop-filter: blur(22px) saturate(160%);
+  -webkit-backdrop-filter: blur(22px) saturate(160%);
+  border: 1px solid var(--border);
+}
+
+/* Lenis smooth scroll — disable native smooth scroll when active to avoid double-easing */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+/* Respect reduced motion globally for our own utilities */
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-in-up,
+  .animate-fade-in,
+  .animate-slide-in-left,
+  .page-mount {
+    animation: none;
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+  .animate__animated {
+    animation: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+  html { scroll-behavior: auto; }
+}
+
+/* Animate.css global tuning: slower/softer than defaults, no layout shift */
+.animate__animated {
+  animation-duration: 700ms;
+  --animate-duration: 700ms;
+  animation-fill-mode: both;
+  will-change: opacity, transform;
+  backface-visibility: hidden;
+}
+
+/* About page — floating tech cards & architecture lines */
+@keyframes float-soft {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(0, -8px, 0); }
+}
+@keyframes float-soft-alt {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(0, 10px, 0); }
+}
+@keyframes dash-flow {
+  to { stroke-dashoffset: -200; }
+}
+@keyframes badge-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(16,185,129,0.0), 0 18px 60px -22px rgba(16,185,129,0.25); }
+  50% { box-shadow: 0 0 0 6px rgba(16,185,129,0.06), 0 24px 70px -22px rgba(16,185,129,0.4); }
+}
+.float-card { animation: float-soft 6s ease-in-out infinite; }
+.float-card-alt { animation: float-soft-alt 7s ease-in-out infinite; }
+.arch-line { stroke-dasharray: 4 8; animation: dash-flow 6s linear infinite; }
+.exp-badge-glow { animation: badge-glow 3.4s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) {
+  .float-card, .float-card-alt, .arch-line, .exp-badge-glow { animation: none; }
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+ * Cinematic studio primitives — emerald edition
+ * ────────────────────────────────────────────────────────────────────────── */
+
+/* Vertical data-stream lines (Matrix-adjacent but tasteful: thin emerald rain) */
+@keyframes data-stream {
+  0%   { transform: translateY(-100%); opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 1; }
+  100% { transform: translateY(140vh); opacity: 0; }
+}
+.data-stream {
+  background: linear-gradient(to bottom, transparent, var(--glow-emerald), transparent);
+  animation: data-stream var(--d, 9s) linear infinite;
+  animation-delay: var(--delay, 0s);
+}
+
+/* Infinite marquee (partners / logo rail) — driven by CSS var for direction */
+@keyframes marquee-x {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.animate-marquee {
+  animation: marquee-x var(--marquee-duration, 38s) linear infinite;
+}
+.marquee-paused:hover .animate-marquee,
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+.mask-fade-x {
+  -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+          mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+}
+
+/* Button / surface shimmer sweep */
+@keyframes shimmer-sweep {
+  0%   { transform: translateX(-130%) skewX(-18deg); }
+  100% { transform: translateX(230%) skewX(-18deg); }
+}
+.shimmer-sweep { animation: shimmer-sweep 1.1s var(--ease-out-cinema); }
+
+/* Terminal scanline + caret */
+@keyframes scanline {
+  0%   { transform: translateY(0); opacity: 0; }
+  6%   { opacity: 0.5; }
+  100% { transform: translateY(100%); opacity: 0; }
+}
+@keyframes caret-blink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
+.caret-blink { animation: caret-blink 1.05s steps(1) infinite; }
+
+/* Aurora drift for ambient blobs */
+@keyframes aurora-drift {
+  0%, 100% { transform: translate3d(0,0,0) scale(1); }
+  33%      { transform: translate3d(4%, -3%, 0) scale(1.06); }
+  66%      { transform: translate3d(-3%, 4%, 0) scale(0.97); }
+}
+.aurora-drift { animation: aurora-drift 22s var(--ease-in-out-cinema) infinite; }
+
+/* Emerald text glow helper */
+.text-glow-emerald {
+  text-shadow: 0 0 24px oklch(0.86 0.22 158 / 0.45), 0 0 60px oklch(0.86 0.22 158 / 0.2);
+}
+
+/* Premium emerald focus/hover ring shadow */
+.glow-emerald {
+  box-shadow: 0 0 0 1px oklch(0.86 0.22 158 / 0.25), 0 10px 40px -12px oklch(0.86 0.22 158 / 0.45);
+}
+
+/* ── Custom cursor ─────────────────────────────────────────────────────────
+ * Native cursor hidden only on devices that truly have a fine pointer + hover
+ * (real mouse). Touch / coarse pointers keep the native cursor untouched. */
+@media (hover: hover) and (pointer: fine) {
+  html.has-custom-cursor,
+  html.has-custom-cursor * {
+    cursor: none !important;
+  }
+}
+.cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  pointer-events: none;
+  border-radius: 9999px;
+  mix-blend-mode: difference;
+  will-change: transform, width, height, opacity;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .data-stream, .animate-marquee, .aurora-drift, .shimmer-sweep, .caret-blink {
+    animation: none !important;
+  }
+  /* Never hide the native cursor when motion is reduced */
+  html.has-custom-cursor, html.has-custom-cursor * { cursor: auto !important; }
+}
