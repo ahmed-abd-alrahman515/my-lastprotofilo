@@ -19,10 +19,6 @@ import { AmbientBackground } from "@/components/projects/ambient-background";
 import { ModeSwitcher, type ViewMode } from "@/components/projects/mode-switcher";
 import { localeDirection, type Locale } from "@/i18n/routing";
 
-const CinematicMode = dynamic(
-  () => import("@/components/projects/cinematic-mode").then((mod) => mod.CinematicMode),
-  { loading: () => <ModeStageSkeleton /> },
-);
 const TimelineMode = dynamic(
   () => import("@/components/projects/timeline-mode").then((mod) => mod.TimelineMode),
   { loading: () => <ModeStageSkeleton /> },
@@ -108,7 +104,7 @@ export function ProjectsArchive({ projects }: { projects: Project[] }) {
   const t = useTranslations("projects.labels");
   const locale = useLocale() as Locale;
   const reduced = useReducedMotion() ?? false;
-  const [mode, setMode] = React.useState<ViewMode>("cinematic");
+  const [mode, setMode] = React.useState<ViewMode>("timeline");
   const localizedProjects = React.useMemo(
     () => projects.map((project) => localizeProject(project, locale)),
     [locale, projects],
@@ -187,11 +183,6 @@ export function ProjectsArchive({ projects }: { projects: Project[] }) {
             exit={reduced ? { opacity: 0 } : { opacity: 0, y: -12, filter: "blur(6px)" }}
             transition={modeTransition}
           >
-            {mode === "cinematic" && (
-              <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                <CinematicMode projects={localizedProjects} />
-              </div>
-            )}
             {mode === "timeline" && (
               <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <TimelineMode projects={localizedProjects} />

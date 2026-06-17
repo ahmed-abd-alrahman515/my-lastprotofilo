@@ -2092,6 +2092,69 @@ export const projects: Project[] = [
     },
   },
 
+
+
+
+
+
+//car service pos
+  {
+    id: "project_car_pos",
+    title: "Car Service POS – Management & Billing System",
+    description:
+      "A professional Point of Sale (POS) and management system for car service centers, built as a standalone product and developed entirely by me.",
+    longDescription:
+      "Car Service POS is a full-featured management system designed for car service centers, car washes, and maintenance workshops. The system provides a fast cashier interface for creating invoices, managing services, tracking vehicles, and monitoring daily revenue. This project was fully designed and developed independently as a commercial product and is available for sale.",
+    problem:
+      "Many small car service centers still rely on manual records or basic tools to manage customers, services, and payments, which leads to data loss, slow billing processes, and limited financial visibility.",
+    solution:
+      "Developed a specialized POS and management system that centralizes customer data, vehicle tracking, service management, and billing within a simple and efficient dashboard.",
+    features: [
+      "Professional POS cashier interface",
+      "Customer and vehicle management",
+      "Services management system",
+      "Employee accounts and access control",
+      "Daily revenue and activity reports",
+      "Discount and offers management",
+      "Invoice generation and tracking",
+    ],
+    technologies: [
+      "Laravel",
+      "PHP",
+      "MySQL",
+      "JavaScript",
+      "Bootstrap",
+      "REST API",
+    ],
+    image: "/image/carpos/1.PNG",
+    category: "erp",
+    categories: ["crm", "dashboard", "fullstack"],
+    accent: "emerald",
+    caseStudy: {
+      heroImage: "/image/carpos/1.PNG",
+      gallery: [
+        {
+          src: "/image/carpos/1.PNG",
+          caption: "Car Service POS overview",
+        },
+        { src: "/image/carpos/2.PNG", caption: "Cashier screen" },
+        { src: "/image/carpos/3.PNG", caption: "Invoices and billing" },
+        { src: "/image/carpos/4.PNG", caption: "Customer and vehicle management" },
+        { src: "/image/carpos/5.PNG", caption: "Services management" },
+        { src: "/image/carpos/6.PNG", caption: "Revenue and reports" },
+        { src: "/image/carpos/7.PNG", caption: "Vehicle tracking" },
+        { src: "/image/carpos/8.PNG", caption: "Customer records" },
+        { src: "/image/carpos/9.PNG", caption: "Daily operations dashboard" },
+        { src: "/image/carpos/10.PNG", caption: "Employee access and control" },
+        { src: "/image/carpos/11.PNG", caption: "Offers and discounts" },
+        { src: "/image/carpos/12.PNG", caption: "Invoice flow" },
+      ],
+    },
+  },
+
+
+
+
   // locate
   {
     id: "project_1",
@@ -2589,41 +2652,7 @@ export const projects: Project[] = [
     categories: ["uiux"],
   },
 
-  //car service pos
-  {
-    id: "project_car_pos",
-    title: "Car Service POS – Management & Billing System",
-    description:
-      "A professional Point of Sale (POS) and management system for car service centers, built as a standalone product and developed entirely by me.",
-    longDescription:
-      "Car Service POS is a full-featured management system designed for car service centers, car washes, and maintenance workshops. The system provides a fast cashier interface for creating invoices, managing services, tracking vehicles, and monitoring daily revenue. This project was fully designed and developed independently as a commercial product and is available for sale.",
-    problem:
-      "Many small car service centers still rely on manual records or basic tools to manage customers, services, and payments, which leads to data loss, slow billing processes, and limited financial visibility.",
-    solution:
-      "Developed a specialized POS and management system that centralizes customer data, vehicle tracking, service management, and billing within a simple and efficient dashboard.",
-    features: [
-      "Professional POS cashier interface",
-      "Customer and vehicle management",
-      "Services management system",
-      "Employee accounts and access control",
-      "Daily revenue and activity reports",
-      "Discount and offers management",
-      "Invoice generation and tracking",
-    ],
-    technologies: [
-      "Laravel",
-      "PHP",
-      "MySQL",
-      "JavaScript",
-      "Bootstrap",
-      "REST API",
-    ],
-    image: "/image/carnew.PNG",
-    projectUrl: "https://ahmed-abd-alrahman515.github.io/Car_system_profile/",
-    category: "erp",
-    categories: ["crm", "dashboard", "fullstack"],
-    accent: "emerald",
-  },
+  
 
 
 

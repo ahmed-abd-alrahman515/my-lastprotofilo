@@ -3,11 +3,11 @@
 import * as React from "react";
 import { motion } from "framer-motion";
 import { useTranslations } from "next-intl";
-import { ArrowDownRight, Clapperboard, GitCommitVertical, Orbit } from "lucide-react";
+import { ArrowDownRight, GitCommitVertical, Orbit } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { usePerformanceProfile } from "@/components/projects/use-projects-ui";
 
-export type ViewMode = "cinematic" | "timeline" | "orbital";
+export type ViewMode = "timeline" | "orbital";
 
 const MODES: {
   key: ViewMode;
@@ -15,12 +15,6 @@ const MODES: {
   labelKey: string;
   descKey: string;
 }[] = [
-  {
-    key: "cinematic",
-    icon: <Clapperboard className="h-4 w-4" />,
-    labelKey: "modeCinematic",
-    descKey: "modeCinematicDesc",
-  },
   {
     key: "timeline",
     icon: <GitCommitVertical className="h-4 w-4" />,
