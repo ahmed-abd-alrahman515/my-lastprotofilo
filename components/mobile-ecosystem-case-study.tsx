@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import useEmblaCarousel from "embla-carousel-react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import {
   ArrowLeft,
@@ -24,8 +24,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { IPhoneMockup } from "@/components/system";
 import {
-  categoryMeta,
   getProjectCategories,
+  localizeProject,
   resolveCaseStudy,
   type Project,
   type MobileAppShowcase,
@@ -48,6 +48,7 @@ import {
   type Shot,
 } from "@/components/case-study/ui";
 import { cn } from "@/lib/utils";
+import { localeDirection, type Locale } from "@/i18n/routing";
 
 /* ───────────────────────── mobile phone slider ───────────────────────── */
 
@@ -59,25 +60,44 @@ type FlatScreen = {
   description: string;
 };
 
+function localizeAppLabel(value: string, tLabels: ReturnType<typeof useTranslations>) {
+  const normalized = value.trim().toLowerCase();
+  if (normalized === "customer app" || normalized === "customer") return tLabels("customerApp");
+  if (normalized === "delivery app" || normalized === "delivery") return tLabels("deliveryApp");
+  if (normalized === "admin dashboard" || normalized === "admin app" || normalized === "admin") {
+    return tLabels("adminDashboard");
+  }
+  if (normalized === "sales rep app" || normalized === "sales representative app") {
+    return tLabels("salesRepApp");
+  }
+  return value;
+}
+
 function MobilePhoneSlider({ apps }: { apps: MobileAppShowcase[] }) {
+  const t = useTranslations("projects.labels");
+  const locale = useLocale() as Locale;
+  const isRtl = localeDirection[locale] === "rtl";
   const flat: FlatScreen[] = React.useMemo(
     () =>
       apps.flatMap((a) =>
         a.screens.map((s) => ({
-          appName: a.name,
-          appType: a.type,
+          appName: localizeAppLabel(a.name, t),
+          appType: localizeAppLabel(a.type, t),
           src: s.src,
           title: s.title,
           description: s.description,
         })),
       ),
-    [apps],
+    [apps, t],
   );
 
   const [emblaRef, emblaApi] = useEmblaCarousel({
     loop: true,
-    align: "center",
+    align: "start",
     containScroll: "trimSnaps",
+    skipSnaps: false,
+    dragFree: false,
+    direction: isRtl ? "rtl" : "ltr",
   });
   const [selected, setSelected] = React.useState(0);
 
@@ -96,31 +116,67 @@ function MobilePhoneSlider({ apps }: { apps: MobileAppShowcase[] }) {
   return (
     <div className="relative">
       <div className="overflow-hidden" ref={emblaRef}>
-        <div className="flex gap-6 px-2 py-4">
+        <div
+          className={cn(
+            "flex items-stretch gap-4 px-2 py-4 sm:gap-6 sm:px-6",
+            isRtl && "flex-row-reverse",
+          )}
+        >
           {flat.map((s, i) => {
             const isActive = i === selected;
             return (
               <div
                 key={i}
                 className={cn(
-                  "min-w-0 flex-[0_0_70%] transition-all duration-500 sm:flex-[0_0_42%] lg:flex-[0_0_28%]",
-                  isActive ? "scale-100 opacity-100" : "scale-95 opacity-55",
+                  "min-w-0 flex-[0_0_82%] transition-all duration-500 sm:flex-[0_0_52%] lg:flex-[0_0_34%]",
+                  isActive ? "opacity-100" : "opacity-55",
                 )}
               >
-                <div className="flex flex-col items-center">
-                  <IPhoneMockup
-                    src={s.src || "/placeholder.svg"}
-                    alt={s.title}
-                    chassis={i % 2 === 0 ? "graphite" : "silver"}
-                  />
-                  <div className="mt-5 text-center">
+                <div className="flex h-full flex-col items-center">
+                  <div
+                    className={cn(
+                      "relative flex min-h-[28rem] w-full items-center justify-center overflow-hidden rounded-[2rem] border border-foreground/10 bg-gradient-to-b from-white/[0.03] to-transparent px-3 py-8 transition-all duration-500",
+                      isActive
+                        ? "bg-card/72 shadow-[0_18px_44px_-30px_rgba(16,185,129,0.25)]"
+                        : "bg-card/40",
+                    )}
+                  >
+                    <div
+                      aria-hidden
+                      className={cn(
+                        "absolute inset-x-10 top-6 h-24 rounded-full bg-emerald-400/10 blur-3xl transition-opacity duration-500",
+                        isActive ? "opacity-100" : "opacity-0",
+                      )}
+                    />
+                    <div className="relative flex items-center justify-center">
+                      <div
+                        className={cn(
+                          "transform-gpu transition-transform duration-500",
+                          isActive ? "scale-[0.94]" : "scale-[0.78]",
+                        )}
+                      >
+                        <IPhoneMockup
+                          src={s.src || "/placeholder.svg"}
+                          alt={s.title}
+                          chassis={i % 2 === 0 ? "graphite" : "silver"}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    className={cn(
+                      "w-full px-2 pb-1 pt-4 transition-all duration-300",
+                      isRtl ? "text-right" : "text-left",
+                    )}
+                  >
                     <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-emerald-200/85">
                       {s.appName}
                     </div>
-                    <div className="mt-1.5 text-sm font-semibold text-foreground">
+                    <div className="mt-1.5 text-base font-semibold text-foreground">
                       {s.title}
                     </div>
-                    <p className="mx-auto mt-1.5 max-w-[16rem] text-xs leading-relaxed text-foreground/75">
+                    <div className="mt-1 text-xs text-foreground/55">{s.appType}</div>
+                    <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-foreground/75">
                       {s.description}
                     </p>
                   </div>
@@ -133,27 +189,33 @@ function MobilePhoneSlider({ apps }: { apps: MobileAppShowcase[] }) {
 
       <button
         type="button"
-        aria-label="Previous"
+        aria-label={t("previous")}
         onClick={() => emblaApi?.scrollPrev()}
-        className="absolute left-2 top-1/2 z-10 -translate-y-1/2 rounded-full border border-foreground/10 bg-card/70 p-2 text-foreground backdrop-blur-md transition hover:border-emerald-200/40 hover:bg-muted sm:left-4"
+        className={cn(
+          "absolute top-[40%] z-10 -translate-y-1/2 rounded-full border border-foreground/10 bg-card/85 p-2 text-foreground backdrop-blur-md transition hover:border-emerald-200/40 hover:bg-muted sm:p-2.5",
+          isRtl ? "right-0 sm:right-2" : "left-0 sm:left-2",
+        )}
       >
-        <ChevronLeft className="h-5 w-5" />
+        {isRtl ? <ChevronRight className="h-5 w-5" /> : <ChevronLeft className="h-5 w-5" />}
       </button>
       <button
         type="button"
-        aria-label="Next"
+        aria-label={t("next")}
         onClick={() => emblaApi?.scrollNext()}
-        className="absolute right-2 top-1/2 z-10 -translate-y-1/2 rounded-full border border-foreground/10 bg-card/70 p-2 text-foreground backdrop-blur-md transition hover:border-emerald-200/40 hover:bg-muted sm:right-4"
+        className={cn(
+          "absolute top-[40%] z-10 -translate-y-1/2 rounded-full border border-foreground/10 bg-card/85 p-2 text-foreground backdrop-blur-md transition hover:border-emerald-200/40 hover:bg-muted sm:p-2.5",
+          isRtl ? "left-0 sm:left-2" : "right-0 sm:right-2",
+        )}
       >
-        <ChevronRight className="h-5 w-5" />
+        {isRtl ? <ChevronLeft className="h-5 w-5" /> : <ChevronRight className="h-5 w-5" />}
       </button>
 
-      <div className="mt-6 flex justify-center gap-2">
+      <div className="mt-6 flex justify-center gap-2 sm:mt-8">
         {flat.map((_, i) => (
           <button
             key={i}
             type="button"
-            aria-label={`Go to screen ${i + 1}`}
+            aria-label={t("goToScreen", { index: i + 1 })}
             onClick={() => emblaApi?.scrollTo(i)}
             className={cn(
               "h-1.5 rounded-full transition-all",
@@ -204,10 +266,14 @@ export function MobileEcosystemCaseStudy({
   related: Project[];
 }) {
   const t = useTranslations("projects.caseStudy");
-  const cs = resolveCaseStudy(project);
-  const liveHref = project.liveUrl ?? project.projectUrl;
-  const categories = getProjectCategories(project);
+  const tLabels = useTranslations("projects.labels");
+  const locale = useLocale() as Locale;
+  const localizedProject = React.useMemo(() => localizeProject(project, locale), [locale, project]);
+  const cs = resolveCaseStudy(project, locale);
+  const liveHref = localizedProject.liveUrl ?? localizedProject.projectUrl;
+  const categories = getProjectCategories(localizedProject);
   const eco = cs.mobileEcosystem;
+  const isRtl = localeDirection[locale] === "rtl";
 
   const heroShot = eco?.systemScreenshots?.[0];
   const heroSrc = heroShot?.src ?? cs.heroImage ?? project.image;
@@ -270,14 +336,14 @@ export function MobileEcosystemCaseStudy({
             className="-ml-3 mb-8 text-foreground/80 hover:bg-foreground/[0.07] hover:text-foreground"
           >
             <Link href="/projects">
-              <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+              <ArrowLeft className="h-4 w-4 rtl:rotate-180" aria-hidden="true" />
               {t("backToArchive")}
             </Link>
           </Button>
 
           <div className="grid items-center gap-12 lg:grid-cols-[1fr_1.15fr]">
             <Reveal y={30}>
-              <div className="flex flex-wrap items-center gap-2">
+              <div className={cn("flex flex-wrap items-center gap-2", isRtl && "justify-end")}>
                 <span className="rounded-full border border-emerald-200/30 bg-emerald-200/10 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.22em] text-emerald-200">
                   {t("ecosystemBadge")}
                 </span>
@@ -291,19 +357,19 @@ export function MobileEcosystemCaseStudy({
                     key={c}
                     className="rounded-full border border-foreground/10 bg-foreground/[0.03] px-3 py-1 font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground"
                   >
-                    {categoryMeta[c].label}
+                    {tLabels(c)}
                   </span>
                 ))}
               </div>
 
-              <h1 className="mt-6 text-balance text-4xl font-bold leading-[1.05] tracking-tight sm:text-5xl lg:text-6xl">
-                {cs.heroHeadline ?? project.title}
+              <h1 className={cn("mt-6 text-balance text-4xl font-bold leading-[1.05] tracking-tight sm:text-5xl lg:text-6xl", isRtl && "text-right leading-[1.18]")}>
+                {cs.heroHeadline ?? localizedProject.title}
               </h1>
-              <p className="mt-5 max-w-2xl text-pretty text-lg leading-relaxed text-foreground/80">
-                {cs.heroSubline ?? project.description}
+              <p className={cn("mt-5 max-w-2xl text-pretty text-lg leading-relaxed text-foreground/80", isRtl && "text-right")}>
+                {cs.heroSubline ?? localizedProject.description}
               </p>
 
-              <dl className="mt-8 grid max-w-2xl grid-cols-2 gap-3 sm:grid-cols-4">
+              <dl className={cn("mt-8 grid max-w-2xl grid-cols-2 gap-3 sm:grid-cols-4", isRtl && "text-right")}>
                 {(["role", "timeline", "industry", "status"] as const).map((k) => {
                   const metaLabel = {
                     role: t("metaRole"),
@@ -328,7 +394,7 @@ export function MobileEcosystemCaseStudy({
               </dl>
 
               {(liveHref || project.githubUrl) && (
-                <div className="mt-8 flex flex-wrap gap-3">
+                <div className={cn("mt-8 flex flex-wrap gap-3", isRtl && "justify-end")}>
                   {liveHref && (
                     <Button asChild>
                       <a href={liveHref} target="_blank" rel="noopener noreferrer">
@@ -357,7 +423,7 @@ export function MobileEcosystemCaseStudy({
             <Reveal x={34} y={0} delay={0.12}>
               <BrowserFrame
                 src={heroSrc}
-                alt={project.title}
+                alt={localizedProject.title}
                 label={heroShot?.title ?? project.id}
                 priority
               />
@@ -412,10 +478,10 @@ export function MobileEcosystemCaseStudy({
                     className="rounded-xl border border-foreground/10 bg-card/40 p-4"
                   >
                     <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-emerald-200/85">
-                      {a.type}
+                      {localizeAppLabel(a.type, tLabels)}
                     </div>
                     <div className="mt-1.5 text-sm font-semibold text-foreground">
-                      {a.name}
+                      {localizeAppLabel(a.name, tLabels)}
                     </div>
                     <p className="mt-1.5 text-xs leading-relaxed text-foreground/75">
                       {a.description}
@@ -471,14 +537,14 @@ export function MobileEcosystemCaseStudy({
               index: "05",
               badge: t("problemEyebrow"),
               title: t("problemTitle"),
-              body: project.problem,
+              body: localizedProject.problem,
             }}
             solution={{
               id: "solution",
               index: "06",
               badge: t("solutionEyebrow"),
               title: t("solutionTitle"),
-              body: project.solution,
+              body: localizedProject.solution,
             }}
           />
         </div>
@@ -587,7 +653,7 @@ export function MobileEcosystemCaseStudy({
             <div className="mb-16">
               <Reveal>
                 <div className="flex items-end justify-between gap-4">
-                  <div>
+                  <div className={cn(isRtl && "text-right")}>
                     <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-emerald-200/85">
                       {t("continueExploring")}
                     </div>
@@ -599,7 +665,7 @@ export function MobileEcosystemCaseStudy({
                     href="/projects"
                     className="hidden items-center gap-1 text-sm text-foreground/80 hover:text-foreground sm:inline-flex"
                   >
-                    {t("viewArchive")} <ArrowRight className="h-4 w-4" />
+                    {t("viewArchive")} <ArrowRight className="h-4 w-4 rtl:rotate-180" />
                   </Link>
                 </div>
               </Reveal>
@@ -610,7 +676,7 @@ export function MobileEcosystemCaseStudy({
           )}
 
           <Reveal>
-            <div className="relative overflow-hidden rounded-3xl border border-foreground/10 bg-gradient-to-br from-emerald-300/[0.06] via-white/[0.03] to-emerald-300/[0.06] p-8 text-center sm:p-12">
+            <div className="relative overflow-hidden rounded-3xl border border-foreground/10 bg-gradient-to-br from-emerald-300/[0.06] via-white/[0.03] to-emerald-300/[0.06] p-8 text-center shadow-[0_8px_24px_-22px_rgba(15,23,42,0.14)] dark:shadow-none sm:p-12">
               <div
                 aria-hidden
                 className="pointer-events-none absolute -top-24 left-1/2 h-48 w-2/3 -translate-x-1/2 rounded-full bg-emerald-400/12 blur-3xl"
@@ -622,10 +688,10 @@ export function MobileEcosystemCaseStudy({
                 {t("ctaLead")}
               </p>
               <div className="relative mt-6">
-                <Button asChild size="lg" className="shadow-lg shadow-emerald-950/40">
+                <Button asChild size="lg" className="shadow-[0_4px_18px_-12px_rgba(16,185,129,0.26)] dark:shadow-lg dark:shadow-emerald-950/40">
                   <Link href="/contact">
                     {t("ctaButton")}
-                    <ArrowRight className="h-4 w-4" aria-hidden />
+                    <ArrowRight className="h-4 w-4 rtl:rotate-180" aria-hidden />
                   </Link>
                 </Button>
               </div>

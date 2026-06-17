@@ -348,7 +348,7 @@ export function EngineeringHero() {
               <div className="absolute inset-0 -z-10 rounded-[2rem] bg-gradient-to-br from-emerald-400/15 via-transparent to-teal-500/15" />
               <div className="relative aspect-[4/5] overflow-hidden rounded-[1.6rem] bg-card">
                 <Image
-                  src="/image/myiamgeeelast.jpg"
+                  src="/image/ahmedimage.png"
                   alt="Ahmed Alaydi — Full-Stack Engineer"
                   fill
                   priority

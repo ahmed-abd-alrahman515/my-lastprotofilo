@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import Image from "next/image";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import {
   motion,
   AnimatePresence,
@@ -22,6 +22,7 @@ import {
 import { cn } from "@/lib/utils";
 import { IPhoneMockup } from "@/components/system";
 import { themeFor, type AccentTheme } from "./accent";
+import { localeDirection, type Locale } from "@/i18n/routing";
 
 /** Per-offset transform recipe for the cinematic stage (deeper than before). */
 function transformFor(offset: number, reduced: boolean) {
@@ -70,8 +71,9 @@ const revealItem = {
 };
 
 function StackTags({ project }: { project: Project }) {
+  const t = useTranslations("projects.labels");
   const cats = getProjectCategories(project)
-    .map((c) => categoryMeta[c].shortLabel)
+    .map((c) => t(c))
     .slice(0, 4);
   return (
     <div className="flex flex-wrap gap-1.5">
@@ -99,9 +101,11 @@ function CinematicCard({
   theme: AccentTheme;
 }) {
   const t = useTranslations("projects.labels");
+  const locale = useLocale() as Locale;
   const reduced = useReducedMotion() ?? false;
   const primaryCategory = project.category ?? "platform";
   const isMobile = primaryCategory === "mobile";
+  const isRtl = localeDirection[locale] === "rtl";
 
   // Mouse parallax on the active card's media — gentle layered depth.
   const mx = useMotionValue(0);
@@ -137,7 +141,7 @@ function CinematicCard({
           : undefined
       }
       className={cn(
-        "group/card relative flex h-full w-full flex-col overflow-hidden rounded-[2rem] border bg-gradient-to-b from-white/[0.08] to-white/[0.015] backdrop-blur-xl transition-[border-color,box-shadow] duration-500 [transform-style:preserve-3d]",
+        "group/card relative flex h-full w-full flex-col overflow-hidden rounded-[2rem] border bg-gradient-to-b from-white/[0.08] to-white/[0.015] backdrop-blur-xl shadow-[0_10px_32px_-28px_rgba(15,23,42,0.16)] transition-[border-color,box-shadow] duration-500 [transform-style:preserve-3d] dark:shadow-none",
         active ? cn("border-transparent", theme.border, theme.ring) : "border-foreground/10",
       )}
     >
@@ -212,7 +216,6 @@ function CinematicCard({
               alt={project.title}
               fill
               sizes="(min-width:1024px) 64vw, 92vw"
-              priority={active}
               className={cn(
                 "object-cover transition-transform duration-[1200ms] ease-[cubic-bezier(0.22,1,0.36,1)]",
                 active ? "scale-100 group-hover/card:scale-[1.06]" : "scale-110",
@@ -223,7 +226,7 @@ function CinematicCard({
         <div className="absolute inset-0 bg-gradient-to-t from-background via-background/30 to-transparent" />
         <div className="absolute inset-0 bg-gradient-to-r from-background/45 via-transparent to-background/45" />
 
-        <div className="absolute left-5 top-5 flex flex-wrap items-center gap-2">
+        <div className={cn("absolute top-5 flex flex-wrap items-center gap-2", isRtl ? "right-5 justify-end" : "left-5")}>
           <span
             className={cn(
               "rounded-full border bg-background/60 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.2em] backdrop-blur-md",
@@ -231,7 +234,7 @@ function CinematicCard({
               theme.text,
             )}
           >
-            {categoryMeta[primaryCategory].label}
+            {t(primaryCategory)}
           </span>
           {project.group && (
             <span className="rounded-full border border-foreground/15 bg-background/50 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.2em] text-foreground/70 backdrop-blur-md">
@@ -242,7 +245,7 @@ function CinematicCard({
       </div>
 
       {/* Copy */}
-      <div className="relative flex flex-1 flex-col gap-4 p-6 sm:p-8">
+      <div className={cn("relative flex flex-1 flex-col gap-4 p-6 sm:p-8", isRtl && "text-right")}>
         <AnimatePresence mode="wait">
           {active && (
             <motion.div
@@ -299,7 +302,7 @@ function CinematicCard({
                   )}
                 >
                   {t("viewFullCaseStudy")}
-                  <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover/cta:-translate-y-0.5 group-hover/cta:translate-x-0.5" />
+                  <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover/cta:-translate-y-0.5 group-hover/cta:translate-x-0.5 rtl:scale-x-[-1]" />
                 </Link>
               </motion.div>
             </motion.div>
@@ -321,9 +324,11 @@ function CinematicCard({
 
 export function CinematicMode({ projects }: { projects: Project[] }) {
   const t = useTranslations("projects.labels");
+  const locale = useLocale() as Locale;
   const reduced = useReducedMotion() ?? false;
   const [active, setActive] = React.useState(0);
   const total = projects.length;
+  const isRtl = localeDirection[locale] === "rtl";
 
   const clamp = React.useCallback(
     (i: number) => Math.max(0, Math.min(total - 1, i)),
@@ -343,10 +348,10 @@ export function CinematicMode({ projects }: { projects: Project[] }) {
   const onKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "ArrowLeft") {
       e.preventDefault();
-      go(-1);
+      go(isRtl ? 1 : -1);
     } else if (e.key === "ArrowRight") {
       e.preventDefault();
-      go(1);
+      go(isRtl ? -1 : 1);
     }
   };
 
@@ -421,7 +426,7 @@ export function CinematicMode({ projects }: { projects: Project[] }) {
       </div>
 
       {/* Controls */}
-      <div className="mt-8 flex flex-col items-center gap-5">
+      <div className="mt-16 flex flex-col items-center gap-5 sm:mt-20">
         <div className="flex items-center gap-4">
           <button
             type="button"

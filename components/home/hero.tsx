@@ -3,13 +3,15 @@
 import * as React from "react";
 import { motion, useMotionValue, useReducedMotion, useSpring } from "framer-motion";
 import { ArrowRight, Download, Mail, ChevronDown } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import { Container, Magnetic } from "@/components/system";
-import { useIsMobile } from "@/components/projects/use-projects-ui";
+import { usePerformanceProfile } from "@/components/projects/use-projects-ui";
 import { HeroVideoBackground } from "@/components/home/hero-video-background";
+import { localeDirection, type Locale } from "@/i18n/routing";
+import { cn } from "@/lib/utils";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 const stackKeys = ["laravel", "react", "next", "mobile"] as const;
@@ -115,13 +117,50 @@ const WORD_VARIANTS: Record<Exclude<WordMode, "drop">, { x?: number; y?: number 
 const HIGHLIGHT_CLS =
   "bg-gradient-to-r from-emerald-600 via-emerald-600 to-teal-600 bg-clip-text text-transparent drop-shadow-[0_0_22px_rgba(16,185,129,0.25)] dark:from-emerald-200 dark:via-emerald-400 dark:to-teal-300 dark:drop-shadow-[0_0_28px_rgba(16,185,129,0.45)]";
 
-function AnimatedHeadline({ plan, reduce }: { plan: HeadlinePlan; reduce: boolean }) {
+const AnimatedHeadline = React.memo(function AnimatedHeadline({
+  plan,
+  reduce,
+  isRtl,
+}: {
+  plan: HeadlinePlan;
+  reduce: boolean;
+  isRtl: boolean;
+}) {
   return (
-    <h1 className="mt-7 flex max-w-5xl flex-wrap justify-center gap-x-[0.28em] gap-y-1 text-balance text-center text-[2.6rem] font-semibold leading-[1.05] tracking-[-0.035em] text-foreground sm:text-6xl md:text-7xl lg:text-[5.25rem]">
+    <h1
+      className={cn(
+        "mt-7 flex max-w-5xl flex-wrap gap-x-[0.22em] gap-y-2 text-balance text-[2.55rem] font-semibold tracking-[-0.035em] text-foreground sm:text-6xl md:text-7xl lg:text-[5.25rem]",
+        isRtl
+          ? "max-w-[18ch] justify-end text-right leading-[1.28] sm:max-w-[16ch]"
+          : "justify-start text-left leading-[1.05]",
+      )}
+    >
       {plan.words.map((word, wi) => {
         const highlightCls = word.highlight ? `relative ${HIGHLIGHT_CLS}` : "";
 
         if (word.mode === "drop") {
+          if (isRtl) {
+            return (
+              <motion.span
+                key={wi}
+                className={`inline-block ${highlightCls}`}
+                initial={reduce ? false : { y: -90, opacity: 0, filter: "blur(8px)" }}
+                animate={{ y: 0, opacity: 1, filter: "blur(0px)" }}
+                transition={{ duration: 0.65, delay: reduce ? 0 : word.letterDelays[0] ?? 0, ease }}
+              >
+                {word.highlight && (
+                  <span
+                    aria-hidden
+                    className="absolute inset-0 -z-10 bg-gradient-to-r from-emerald-500 via-emerald-500 to-teal-500 bg-clip-text text-transparent opacity-40 blur-2xl dark:from-emerald-200 dark:via-emerald-400 dark:to-teal-300 dark:opacity-60"
+                  >
+                    {word.text}
+                  </span>
+                )}
+                {word.text}
+              </motion.span>
+            );
+          }
+
           return (
             <span key={wi} className={`inline-flex ${highlightCls}`}>
               {word.text.split("").map((ch, ci) => (
@@ -166,15 +205,18 @@ function AnimatedHeadline({ plan, reduce }: { plan: HeadlinePlan; reduce: boolea
       })}
     </h1>
   );
-}
+});
 
 /* ────────────────────────────────────────────────────────────────────────── */
 
 export function Hero() {
   const t = useTranslations("home.hero");
   const tA = useTranslations("actions");
-  const reduce = useReducedMotion() ?? false;
-  const isMobile = useIsMobile();
+  const locale = useLocale() as Locale;
+  const reduceMotion = useReducedMotion() ?? false;
+  const { isMobile, isLowPower, shouldReduceEffects } = usePerformanceProfile();
+  const reduce = reduceMotion || shouldReduceEffects;
+  const isRtl = localeDirection[locale] === "rtl";
 
   const [mounted, setMounted] = React.useState(false);
   React.useEffect(() => setMounted(true), []);
@@ -215,6 +257,7 @@ export function Hero() {
         poster={HERO_VIDEO_POSTER}
         reduce={reduce}
         isMobile={isMobile}
+        isLowPower={isLowPower}
         mounted={mounted}
         rxParallax={rx}
         ryParallax={ry}
@@ -223,7 +266,12 @@ export function Hero() {
       />
 
       <Container size="lg" className="relative">
-        <div className="mx-auto flex max-w-5xl flex-col items-center text-center">
+        <div
+          className={cn(
+            "mx-auto flex max-w-5xl flex-col",
+            isRtl ? "items-end text-right" : "items-start text-left",
+          )}
+        >
           {/* Status pill */}
           <motion.div
             initial={reduce ? false : { opacity: 0, y: 12 }}
@@ -244,28 +292,43 @@ export function Hero() {
             initial={reduce ? false : { opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.08, ease }}
-            className="mt-8 font-mono text-[11px] uppercase tracking-[0.4em] text-primary/90 dark:text-primary/80"
+            className={cn(
+              "mt-8 text-[11px] text-primary/90 dark:text-primary/80",
+              isRtl
+                ? "font-semibold tracking-normal"
+                : "font-mono uppercase tracking-[0.4em]",
+            )}
           >
             {t("eyebrow")}
           </motion.p>
 
           {/* Cinematic three-phase headline */}
-          <AnimatedHeadline plan={plan} reduce={reduce} />
+          <AnimatedHeadline plan={plan} reduce={reduce} isRtl={isRtl} />
 
           {/* Description — soft glass card, fades up after the headline, glows on hover */}
           <motion.div
             initial={reduce ? false : { opacity: 0, y: 22 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: reduce ? 0 : after(-0.4), ease }}
-            className="group mt-9 max-w-2xl rounded-2xl border border-emerald-500/15 bg-emerald-50/45 px-6 py-5 shadow-[0_2px_18px_-14px_rgba(16,185,129,0.3)] backdrop-blur-md transition-all duration-500 hover:border-emerald-400/40 hover:bg-emerald-50/65 hover:shadow-[0_4px_26px_-14px_rgba(16,185,129,0.4)] dark:border-emerald-400/15 dark:bg-white/[0.03] dark:shadow-none dark:hover:border-emerald-300/45 dark:hover:bg-white/[0.06] dark:hover:shadow-[0_0_44px_-8px_rgba(16,185,129,0.4)]"
+            className="group mt-9 max-w-2xl rounded-2xl border border-emerald-500/15 bg-emerald-50/45 px-6 py-5 shadow-[0_1px_10px_-10px_rgba(16,185,129,0.12)] backdrop-blur-sm transition-all duration-500 hover:border-emerald-400/35 hover:bg-emerald-50/62 hover:shadow-[0_3px_14px_-12px_rgba(16,185,129,0.14)] dark:border-emerald-400/15 dark:bg-white/[0.03] dark:shadow-none dark:hover:border-emerald-300/45 dark:hover:bg-white/[0.06] dark:hover:shadow-[0_0_44px_-8px_rgba(16,185,129,0.4)]"
           >
-            <p className="text-pretty text-sm leading-relaxed text-muted-foreground transition-colors duration-500 group-hover:text-foreground/90 sm:text-base">
+            <p
+              className={cn(
+                "text-pretty text-sm leading-relaxed text-muted-foreground transition-colors duration-500 group-hover:text-foreground/90 sm:text-base",
+                isRtl ? "text-right" : "text-left",
+              )}
+            >
               {t("leadV2")}
             </p>
           </motion.div>
 
           {/* CTAs */}
-          <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:flex-wrap sm:justify-center">
+          <div
+            className={cn(
+              "mt-10 flex w-full flex-col gap-4 sm:flex-row sm:flex-wrap",
+              isRtl ? "sm:justify-end" : "sm:justify-start",
+            )}
+          >
             {/* View Projects — enters from the left, magnetic, cyan glow */}
             <motion.div
               initial={reduce ? false : { opacity: 0, x: -40 }}
@@ -281,7 +344,7 @@ export function Hero() {
                 >
                   <Link href="/projects">
                     {tA("viewProjects")}
-                    <ArrowRight className="ms-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+                    <ArrowRight className="ms-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 rtl:group-hover:translate-x-0" />
                   </Link>
                 </Button>
               </Magnetic>
@@ -299,7 +362,7 @@ export function Hero() {
                   asChild
                   size="lg"
                   variant="outline"
-                  className="h-12 w-full rounded-full border-emerald-500/25 bg-emerald-50/50 px-7 text-sm font-medium backdrop-blur-md transition-all duration-300 hover:border-emerald-400/50 hover:bg-emerald-50/75 hover:shadow-[0_2px_22px_-14px_rgba(16,185,129,0.45)] sm:w-auto dark:border-emerald-400/25 dark:bg-card/30 dark:hover:bg-card/50 dark:hover:shadow-[0_0_36px_-10px_rgba(16,185,129,0.5)]"
+                  className="h-12 w-full rounded-full border-emerald-500/25 bg-emerald-50/50 px-7 text-sm font-medium backdrop-blur-sm transition-all duration-300 hover:border-emerald-400/50 hover:bg-emerald-50/75 hover:shadow-[0_1px_14px_-10px_rgba(16,185,129,0.22)] sm:w-auto dark:border-emerald-400/25 dark:bg-card/30 dark:hover:bg-card/50 dark:hover:shadow-[0_0_36px_-10px_rgba(16,185,129,0.5)]"
                 >
                   <Link href="/contact">
                     <Mail className="me-2 h-4 w-4" />
@@ -334,7 +397,10 @@ export function Hero() {
             initial={reduce ? false : { opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: reduce ? 0 : after(0.6), ease }}
-            className="mt-14 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 font-mono text-[10px] uppercase tracking-[0.28em] text-muted-foreground/70"
+            className={cn(
+              "mt-14 flex flex-wrap items-center gap-x-6 gap-y-2 font-mono text-[10px] uppercase tracking-[0.28em] text-muted-foreground/70",
+              isRtl ? "justify-end" : "justify-start",
+            )}
           >
             {stackKeys.map((k, i) => (
               <React.Fragment key={k}>

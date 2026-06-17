@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 import {
   motion,
   AnimatePresence,
@@ -22,7 +23,7 @@ import {
   ArrowRight,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { categoryMeta, type Project } from "@/lib/projects-data";
+import { type Project } from "@/lib/projects-data";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -330,9 +331,11 @@ export function ScreenshotShowcase({
   expandLabel: string;
   closeLabel: string;
 }) {
+  const t = useTranslations("projects.labels");
   const [emblaRef, emblaApi] = useEmblaCarousel({
     loop: shots.length > 1,
-    align: "center",
+    align: "start",
+    containScroll: "trimSnaps",
   });
   const [selected, setSelected] = React.useState(0);
   const [lightbox, setLightbox] = React.useState<number | null>(null);
@@ -375,12 +378,16 @@ export function ScreenshotShowcase({
             return (
               <div
                 key={i}
-                className={cn(
-                  "min-w-0 flex-[0_0_92%] px-2 transition-all duration-500 sm:flex-[0_0_78%] lg:flex-[0_0_66%]",
-                  isActive ? "scale-100 opacity-100" : "scale-[0.9] opacity-45",
-                )}
+                className="min-w-0 flex-[0_0_100%] px-1 sm:px-2"
               >
-                <div className="group/shot overflow-hidden rounded-2xl border border-foreground/10 bg-card shadow-soft-image">
+                <div
+                  className={cn(
+                    "group/shot overflow-hidden rounded-2xl border bg-card shadow-soft-image transition-all duration-300",
+                    isActive
+                      ? "border-emerald-200/20"
+                      : "border-foreground/10",
+                  )}
+                >
                   <div className="flex h-9 items-center gap-1.5 border-b border-foreground/5 bg-foreground/[0.03] px-3">
                     <span className="h-2.5 w-2.5 rounded-full bg-rose-500/70" />
                     <span className="h-2.5 w-2.5 rounded-full bg-amber-400/70" />
@@ -436,26 +443,66 @@ export function ScreenshotShowcase({
         <>
           <button
             type="button"
-            aria-label="Previous"
+            aria-label={t("previous")}
             onClick={() => emblaApi?.scrollPrev()}
-            className="absolute left-1 top-[38%] z-10 -translate-y-1/2 rounded-full border border-foreground/10 bg-card/70 p-2 text-foreground backdrop-blur-md transition hover:border-emerald-200/40 hover:bg-muted sm:left-3"
+            className="absolute left-2 top-[38%] z-10 -translate-y-1/2 rounded-full border border-foreground/10 bg-card/80 p-2 text-foreground backdrop-blur-md transition hover:border-emerald-200/40 hover:bg-muted sm:left-4"
           >
             <ChevronLeft className="h-5 w-5" />
           </button>
           <button
             type="button"
-            aria-label="Next"
+            aria-label={t("next")}
             onClick={() => emblaApi?.scrollNext()}
-            className="absolute right-1 top-[38%] z-10 -translate-y-1/2 rounded-full border border-foreground/10 bg-card/70 p-2 text-foreground backdrop-blur-md transition hover:border-emerald-200/40 hover:bg-muted sm:right-3"
+            className="absolute right-2 top-[38%] z-10 -translate-y-1/2 rounded-full border border-foreground/10 bg-card/80 p-2 text-foreground backdrop-blur-md transition hover:border-emerald-200/40 hover:bg-muted sm:right-4"
           >
             <ChevronRight className="h-5 w-5" />
           </button>
-          <div className="mt-6 flex justify-center gap-2">
+          <div className="mt-5 grid grid-cols-3 gap-2 sm:grid-cols-4 lg:grid-cols-6">
+            {shots.map((s, i) => {
+              const activeThumb = i === selected;
+              return (
+                <button
+                  key={`thumb-${i}`}
+                  type="button"
+                  aria-label={t("goToSlide", { index: i + 1 })}
+                  onClick={() => emblaApi?.scrollTo(i)}
+                  className={cn(
+                    "group/thumb relative overflow-hidden rounded-xl border bg-card/60 text-left transition-all duration-300",
+                    activeThumb
+                      ? "border-emerald-300/50 ring-1 ring-emerald-300/35"
+                      : "border-foreground/10 hover:border-foreground/20",
+                  )}
+                >
+                  <div className="relative aspect-[16/10]">
+                    <Image
+                      src={s.src || "/placeholder.svg"}
+                      alt={s.title ?? `Screenshot ${i + 1}`}
+                      fill
+                      sizes="240px"
+                      className={cn(
+                        "object-cover transition-all duration-300",
+                        activeThumb ? "scale-100 opacity-100" : "scale-[1.02] opacity-75 group-hover/thumb:opacity-95",
+                      )}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-background/10 to-transparent" />
+                  </div>
+                  {s.title && (
+                    <div className="absolute inset-x-0 bottom-0 px-2 py-1.5">
+                      <div className="line-clamp-1 text-[11px] font-medium text-foreground/90">
+                        {s.title}
+                      </div>
+                    </div>
+                  )}
+                </button>
+              );
+            })}
+          </div>
+          <div className="mt-4 flex justify-center gap-2">
             {shots.map((_, i) => (
               <button
                 key={i}
                 type="button"
-                aria-label={`Go to slide ${i + 1}`}
+                aria-label={t("goToSlide", { index: i + 1 })}
                 onClick={() => emblaApi?.scrollTo(i)}
                 className={cn(
                   "h-1.5 rounded-full transition-all",
@@ -811,6 +858,8 @@ export function RelatedSlider({
   related: Project[];
   ctaLabel: string;
 }) {
+  const t = useTranslations("projects.labels");
+  const tLabels = useTranslations("projects.labels");
   const [emblaRef, emblaApi] = useEmblaCarousel({
     align: "start",
     loop: related.length > 3,
@@ -845,7 +894,7 @@ export function RelatedSlider({
                 </div>
                 <div className="p-5">
                   <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-emerald-200/85">
-                    {categoryMeta[r.category ?? "platform"].shortLabel}
+                    {tLabels(r.category ?? "platform")}
                   </div>
                   <div className="mt-2 line-clamp-1 text-base font-semibold text-foreground">
                     {r.title}
@@ -868,7 +917,7 @@ export function RelatedSlider({
         <>
           <button
             type="button"
-            aria-label="Previous"
+            aria-label={t("previous")}
             onClick={() => emblaApi?.scrollPrev()}
             className="absolute -left-2 top-1/3 z-10 hidden -translate-y-1/2 rounded-full border border-foreground/10 bg-card/70 p-2 text-foreground backdrop-blur-md transition hover:border-emerald-200/40 hover:bg-muted sm:flex"
           >
@@ -876,7 +925,7 @@ export function RelatedSlider({
           </button>
           <button
             type="button"
-            aria-label="Next"
+            aria-label={t("next")}
             onClick={() => emblaApi?.scrollNext()}
             className="absolute -right-2 top-1/3 z-10 hidden -translate-y-1/2 rounded-full border border-foreground/10 bg-card/70 p-2 text-foreground backdrop-blur-md transition hover:border-emerald-200/40 hover:bg-muted sm:flex"
           >

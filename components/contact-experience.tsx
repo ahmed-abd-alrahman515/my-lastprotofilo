@@ -420,7 +420,7 @@ export function ContactExperience() {
                   </div>
                 </div>
               ) : (
-                <form onSubmit={handleSubmit} noValidate className="space-y-5" aria-label="Contact form">
+                <form onSubmit={handleSubmit} noValidate className="space-y-5" aria-label={t("form.ariaLabel")}>
                   <header className="mb-2">
                     <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-emerald-200/85">
                       {t("form.eyebrow")}

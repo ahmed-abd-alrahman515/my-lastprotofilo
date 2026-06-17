@@ -9,6 +9,7 @@ export function useMediaQuery(query: string): boolean {
   const [matches, setMatches] = React.useState(false);
 
   React.useEffect(() => {
+    if (typeof window === "undefined") return;
     const mql = window.matchMedia(query);
     const onChange = () => setMatches(mql.matches);
     onChange();
@@ -22,6 +23,34 @@ export function useMediaQuery(query: string): boolean {
 /** True on viewports we treat as "mobile" for simplified experiences. */
 export function useIsMobile(): boolean {
   return useMediaQuery("(max-width: 767px)");
+}
+
+export function usePerformanceProfile() {
+  const isMobile = useIsMobile();
+  const prefersReducedMotion = useMediaQuery("(prefers-reduced-motion: reduce)");
+  const [isLowPower, setIsLowPower] = React.useState(false);
+
+  React.useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const nav = navigator as Navigator & {
+      connection?: { saveData?: boolean };
+      deviceMemory?: number;
+    };
+
+    const hardwareConcurrency = nav.hardwareConcurrency ?? 8;
+    const deviceMemory = nav.deviceMemory ?? 8;
+    const saveData = nav.connection?.saveData ?? false;
+
+    setIsLowPower(saveData || hardwareConcurrency <= 4 || deviceMemory <= 4);
+  }, []);
+
+  return {
+    isMobile,
+    prefersReducedMotion,
+    isLowPower,
+    shouldReduceEffects: prefersReducedMotion || isMobile || isLowPower,
+  };
 }
 
 /** Reading direction for the active locale (1 = ltr, -1 = rtl). */

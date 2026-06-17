@@ -23,7 +23,6 @@
     "viewServices": "View Services",
     "contactMe": "Contact Me",
     "downloadCv": "Download CV",
-    "bookCall": "Book a Call",
     "viewAll": "View All",
     "viewAllSkills": "View All Skills",
     "getInTouch": "Get In Touch",
@@ -33,6 +32,11 @@
     "learnMore": "Learn More"
   },
   "home": {
+    "selectedSystems": {
+      "eyebrow": "Selected Systems",
+      "heading": "A few systems I've shipped end to end.",
+      "lead": "Drag, scroll, or use the arrows - then open any case study."
+    },
     "hero": {
       "eyebrow": "Ahmed Alaydi · Full-Stack Developer",
       "headline": "I build complete business systems, not just websites.",
@@ -52,7 +56,7 @@
         "api": "APIs & Architecture",
         "mobile": "Mobile Applications"
       },
-      "status": "Available for new engagements",
+      "status": "Available for production work",
       "scrollHint": "Scroll to explore",
       "headlineV2": "I build production-ready systems for real businesses.",
       "headlineAccentV2": "real businesses.",
@@ -171,7 +175,7 @@
       "coreSub": "One connected system",
       "hint": "Hover a node to explore the architecture",
       "sliderEyebrow": "Explore the stack",
-      "sliderHeading": "One architecture, every layer.",
+      "sliderHeading": "One architecture, every layer",
       "nodes": {
         "frontend": {
           "label": "Frontend",
@@ -870,7 +874,7 @@
       "gridView": "Grid",
       "prevProject": "Previous project",
       "nextProject": "Next project",
-      "dragHint": "Drag, swipe, or use ← → to explore",
+      "dragHint": "Drag, swipe, or use arrows to explore",
       "projectType": "Project",
       "exploreShowcase": "Featured Showcase",
       "experienceBadge": "Interactive Exhibition",
@@ -884,8 +888,33 @@
       "modeOrbitalDesc": "Gravity showcase",
       "scrollToExplore": "Scroll to explore",
       "nowFeatured": "Now featuring",
-      "viewMode": "View mode",
-      "projectsCount": "{count} projects"
+      "viewMode": "View Mode",
+      "viewModeHint": "Switch project view",
+      "viewModeHelper": "Try different views to explore the work",
+      "previous": "Previous",
+      "next": "Next",
+      "showProject": "Show project {title}",
+      "dragScroll": "Drag and scroll",
+      "goToScreen": "Go to screen {index}",
+      "goToSlide": "Go to slide {index}",
+      "categories": "Categories",
+      "projectsCount": "{count} projects",
+      "saas": "SaaS",
+      "dashboard": "Dashboards",
+      "mobile": "Mobile apps",
+      "erp": "ERP",
+      "platform": "Platforms",
+      "brand": "Brand websites",
+      "cms": "CMS",
+      "uiux": "UI / UX",
+      "fullstack": "Full stack",
+      "api": "APIs",
+      "crm": "CRM",
+      "ecommerce": "E-Commerce",
+      "customerApp": "Customer App",
+      "deliveryApp": "Delivery App",
+      "adminDashboard": "Admin Dashboard",
+      "salesRepApp": "Sales Rep App"
     },
     "caseStudy": {
       "backToArchive": "Back to Archive",
@@ -933,6 +962,9 @@
       "productionTitle": "Ready to ship and operate",
       "galleryEyebrow": "Gallery",
       "galleryTitle": "In the wild",
+      "desktopEyebrow": "Desktop Application",
+      "desktopTitle": "Cashier desktop experience",
+      "desktopHighlights": "Desktop highlights",
       "featuresEyebrow": "System Features",
       "featuresTitle": "What it does",
       "decisionsEyebrow": "Technical Decisions",
@@ -967,6 +999,7 @@
         "architecture": "Architecture",
         "stack": "Stack",
         "screens": "Screens",
+        "desktop": "Desktop",
         "features": "Features",
         "challenges": "Challenges",
         "results": "Results"
@@ -1003,7 +1036,8 @@
       "instant": "Instant",
       "code": "Code",
       "network": "Network",
-      "open": "Open"
+      "open": "Open",
+      "whatsAppAria": "Contact Ahmed on WhatsApp"
     },
     "cv": {
       "title": "Download CV",
@@ -1023,6 +1057,7 @@
     "form": {
       "eyebrow": "Send a message",
       "heading": "Tell me about the project",
+      "ariaLabel": "Contact form",
       "name": "Full name",
       "email": "Email",
       "subject": "Subject",

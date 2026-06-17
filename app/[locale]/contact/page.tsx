@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { ContactExperience } from "@/components/contact-experience";
+import { getAbsoluteUrl, getLanguageAlternates, getLocalizedUrl, siteConfig } from "@/lib/site";
 
 export async function generateMetadata({
   params,
@@ -9,37 +10,67 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "contact.meta" });
+  const title = t("title");
+  const description = t("description");
+  const url = getLocalizedUrl(locale as "en" | "ar", "/contact");
+  const ogImage = getAbsoluteUrl(siteConfig.ogImage);
+
   return {
-    title: t("title"),
-    description: t("description"),
-    alternates: { canonical: "/contact" },
+    metadataBase: new URL(siteConfig.url),
+    title,
+    description,
+    robots: { index: true, follow: true },
+    alternates: {
+      canonical: url,
+      languages: getLanguageAlternates("/contact"),
+    },
     openGraph: {
-      title: t("title"),
-      description: t("description"),
+      title,
+      description,
+      url,
+      siteName: siteConfig.title,
+      images: [
+        {
+          url: ogImage,
+          width: 1200,
+          height: 630,
+          alt: "Ahmed Alaydi - Full Stack Developer",
+        },
+      ],
       type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [ogImage],
     },
   };
 }
 
-const contactJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "ContactPage",
-  name: "Contact Ahmed Alaydi",
-  url: "https://ahmed-alaydi.com/contact",
-  about: {
-    "@type": "Person",
-    name: "Ahmed Alaydi",
-    jobTitle: "Full-Stack Engineer",
-    email: "mailto:ahmedalayde86@gmail.com",
-    sameAs: [
-      "https://github.com/ahmed-alaydee",
-      "https://www.linkedin.com/in/ahmed-alayadi-3a3bb3291/",
-      "https://wa.me/201006082709",
-    ],
-  },
-};
+export default async function ContactPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+  const url = getLocalizedUrl(locale as "en" | "ar", "/contact");
+  const contactJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "ContactPage",
+    name: locale === "ar" ? "تواصل مع أحمد العايدي" : "Contact Ahmed Alaydi",
+    url,
+    inLanguage: locale,
+    about: {
+      "@type": "Person",
+      name: "Ahmed Alaydi",
+      jobTitle: "Full-Stack Engineer",
+      email: `mailto:${siteConfig.email}`,
+      sameAs: [siteConfig.github, siteConfig.linkedin, siteConfig.whatsapp],
+    },
+  };
 
-export default function ContactPage() {
   return (
     <>
       <script

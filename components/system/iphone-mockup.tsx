@@ -34,7 +34,7 @@ export function IPhoneMockup({
       {/* Outer chassis */}
       <div
         className={cn(
-          "relative aspect-[9/19.5] rounded-[2.4rem] p-[3px] shadow-[0_30px_80px_-20px_rgba(0,0,0,0.6)]",
+          "relative aspect-[9/19.5] rounded-[2.4rem] border border-black/5 p-[3px] shadow-[0_10px_24px_-20px_rgba(15,23,42,0.18)] dark:border-white/5 dark:shadow-[0_30px_80px_-20px_rgba(0,0,0,0.6)]",
           "bg-gradient-to-b",
           chassisStyle,
         )}
@@ -80,7 +80,7 @@ export function IPhoneMockup({
       {/* Reflection / floor glow */}
       <div
         aria-hidden
-        className="pointer-events-none absolute -bottom-10 left-1/2 h-10 w-[80%] -translate-x-1/2 rounded-full bg-primary/30 blur-2xl opacity-50"
+        className="pointer-events-none absolute -bottom-10 left-1/2 h-10 w-[80%] -translate-x-1/2 rounded-full bg-primary/18 opacity-35 blur-2xl dark:bg-primary/30 dark:opacity-50"
       />
     </div>
   );

@@ -3,20 +3,22 @@ import type { Metadata, Viewport } from "next";
 import { Inter, Geist_Mono } from "next/font/google";
 import { notFound } from "next/navigation";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
-import { getTranslations, setRequestLocale } from "next-intl/server";
+import { setRequestLocale } from "next-intl/server";
 import { Analytics } from "@vercel/analytics/next";
 
 import { ThemeProvider } from "@/components/theme-provider";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
 import { WhatsAppFloatingButton } from "@/components/whatsapp-floating-button";
-import {
-  GlobalBackground,
-  SmoothScroll,
-  CustomCursor,
-} from "@/components/system";
-
+import { GlobalBackground, SmoothScroll, CustomCursor } from "@/components/system";
 import { routing, localeDirection, type Locale } from "@/i18n/routing";
+import {
+  getAbsoluteUrl,
+  getLanguageAlternates,
+  getLocaleTag,
+  getLocalizedUrl,
+  siteConfig,
+} from "@/lib/site";
 import "../globals.css";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
@@ -32,47 +34,74 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: "meta" });
+  const currentLocale = locale as Locale;
+  const canonicalUrl = getLocalizedUrl(currentLocale);
+  const ogImage = getAbsoluteUrl(siteConfig.ogImage);
 
   return {
-    title: t("title"),
-    description: t("description"),
-    icons: { icon: "/image/myiamgeeelast.jpg" },
+    metadataBase: new URL(siteConfig.url),
+    title: siteConfig.title,
+    description: siteConfig.description,
+    applicationName: siteConfig.title,
+    icons: {
+      icon: [
+        { url: siteConfig.icon, href: siteConfig.icon },
+      ],
+      shortcut: [{ url: siteConfig.icon, href: siteConfig.icon }],
+      apple: [{ url: siteConfig.icon, href: siteConfig.icon }],
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+        "max-video-preview": -1,
+      },
+    },
+    alternates: {
+      canonical: canonicalUrl,
+      languages: getLanguageAlternates(),
+    },
     openGraph: {
-      title: t("ogTitle"),
-      description: t("ogDescription"),
-      siteName: "Ahmed Alaydi Portfolio",
+      title: siteConfig.title,
+      description: siteConfig.description,
+      url: canonicalUrl,
+      siteName: siteConfig.title,
       images: [
         {
-          url: "/image/myimage.jpeg",
+          url: ogImage,
           width: 1200,
           height: 630,
-          alt: "Ahmed Alaydi — Full-Stack Engineer",
+          alt: "Ahmed Alaydi - Full Stack Developer",
         },
       ],
-      locale,
+      locale: getLocaleTag(currentLocale),
       type: "website",
     },
     twitter: {
       card: "summary_large_image",
-      title: t("title"),
-      description: t("description"),
-      images: ["/image/myiamgeeelast.jpg"],
+      title: siteConfig.title,
+      description: siteConfig.description,
+      images: [ogImage],
     },
-    authors: [{ name: "Ahmed Alaydi" }],
+    authors: [{ name: siteConfig.personName, url: siteConfig.url }],
     keywords: [
-      "Full-Stack Engineer",
+      "Ahmed Alaydi",
+      "Full Stack Developer",
+      "Laravel Developer",
+      "React Developer",
       "Next.js",
       "React",
       "Laravel",
+      "React Native",
       "SaaS",
-      "System Architect",
+      "Admin Dashboards",
+      "REST APIs",
+      "Full Stack Development",
     ],
-    alternates: {
-      languages: Object.fromEntries(
-        routing.locales.map((l) => [l, `/${l}`]),
-      ),
-    },
   };
 }
 
@@ -101,15 +130,11 @@ export default async function LocaleLayout({
   const personJsonLd = {
     "@context": "https://schema.org",
     "@type": "Person",
-    name: "Ahmed Alaydi",
-    jobTitle: "Full-Stack Engineer",
-    url: "https://ahmed-alaydi.com",
-    image: "https://ahmed-alaydi.com/image/myimage.jpeg",
-    sameAs: [
-      "https://github.com/ahmed-alaydee",
-      "https://www.linkedin.com/in/ahmed-alayadi-3a3bb3291/",
-      "https://wa.me/201006082709",
-    ],
+    name: siteConfig.personName,
+    jobTitle: "Full Stack Developer",
+    url: siteConfig.url,
+    image: getAbsoluteUrl(siteConfig.ogImage),
+    sameAs: [siteConfig.github, siteConfig.linkedin, siteConfig.whatsapp],
     knowsAbout: [
       "Laravel",
       "Next.js",
@@ -127,15 +152,19 @@ export default async function LocaleLayout({
   const siteJsonLd = {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    name: "Ahmed Alaydi Portfolio",
-    url: "https://ahmed-alaydi.com",
-    inLanguage: routing.locales,
+    name: siteConfig.name,
+    description: siteConfig.description,
+    url: siteConfig.url,
+    image: getAbsoluteUrl(siteConfig.ogImage),
+    inLanguage: getLocaleTag(locale as Locale),
   };
 
   return (
     <html lang={locale} dir={dir} suppressHydrationWarning>
       <body
-        className={`${inter.variable} ${geistMono.variable} font-sans antialiased`}
+        className={`${inter.variable} ${geistMono.variable} font-sans antialiased ${
+          dir === "rtl" ? "rtl text-right" : "ltr text-left"
+        }`}
       >
         <script
           type="application/ld+json"
@@ -158,7 +187,12 @@ export default async function LocaleLayout({
               <GlobalBackground />
               <div className="relative flex min-h-screen flex-col">
                 <Navigation />
-                <main key={locale} className="page-mount flex-1">{children}</main>
+                <main
+                  key={locale}
+                  className={`page-mount flex-1 ${dir === "rtl" ? "rtl text-right" : "ltr text-left"}`}
+                >
+                  {children}
+                </main>
                 <Footer />
                 <WhatsAppFloatingButton />
               </div>

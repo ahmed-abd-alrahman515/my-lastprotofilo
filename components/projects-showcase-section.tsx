@@ -1,12 +1,16 @@
 "use client";
 
+"use client";
+
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import type { Project } from "@/lib/projects-data";
+import { localizeProject, type Project } from "@/lib/projects-data";
 import { cn } from "@/lib/utils";
+import type { Locale } from "@/i18n/routing";
 
 const projectLabels = [
   "Production System",
@@ -27,6 +31,9 @@ export function ProjectsShowcaseSection({
   description?: string;
   showAllProjectsButton?: boolean;
 }) {
+  const locale = useLocale() as Locale;
+  const t = useTranslations("projects.labels");
+  const localizedProjects = projects.map((project) => localizeProject(project, locale));
   const [visibleCards, setVisibleCards] = useState<Set<number>>(() => new Set());
   const [revealReady, setRevealReady] = useState(false);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -35,7 +42,7 @@ export function ProjectsShowcaseSection({
     setRevealReady(true);
 
     if (!("IntersectionObserver" in window)) {
-      setVisibleCards(new Set(projects.map((_, index) => index)));
+      setVisibleCards(new Set(localizedProjects.map((_, index) => index)));
       return;
     }
 
@@ -66,7 +73,7 @@ export function ProjectsShowcaseSection({
     });
 
     return () => observer.disconnect();
-  }, [projects]);
+  }, [localizedProjects]);
 
   return (
     <section
@@ -189,7 +196,7 @@ export function ProjectsShowcaseSection({
         </div>
 
         <div className="mt-12 space-y-7 lg:mt-16 lg:space-y-8">
-          {projects.map((project, index) => {
+          {localizedProjects.map((project, index) => {
             const isReversed = index % 2 === 1;
 
             return (
@@ -217,7 +224,7 @@ export function ProjectsShowcaseSection({
                       "project-card-image shadow-soft-image relative block min-h-[240px] overflow-hidden rounded-lg border border-foreground/10 bg-card sm:min-h-[320px] lg:min-h-[360px]",
                       isReversed && "lg:order-2",
                     )}
-                    aria-label={`View ${project.title}`}
+                    aria-label={t("showProject", { title: project.title })}
                   >
                     <Image
                       src={project.image || "/placeholder.svg"}
@@ -269,7 +276,7 @@ export function ProjectsShowcaseSection({
                         className="shadow-lg shadow-emerald-950/35 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-0.5"
                       >
                         <Link href={`/projects/${project.id}`}>
-                          View Project
+                          {t("viewProject")}
                           <ArrowRight className="h-4 w-4" aria-hidden="true" />
                         </Link>
                       </Button>
@@ -289,7 +296,7 @@ export function ProjectsShowcaseSection({
               className="border-foreground/15 bg-foreground/[0.07] text-foreground shadow-sm backdrop-blur-md hover:border-emerald-200/35 hover:bg-foreground/[0.12]"
             >
               <Link href="/projects">
-                View All Projects
+                {t("backToProjects")}
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
             </Button>

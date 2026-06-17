@@ -1,4 +1,4 @@
-import { ArrowRight, Calendar } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 
 import { Link } from "@/i18n/navigation";
@@ -17,7 +17,7 @@ export async function Closer() {
       </div>
 
       <Container size="md">
-        <div className="relative mx-auto overflow-hidden rounded-3xl border border-border/60 bg-card/50 p-10 text-center backdrop-blur-xl shadow-[0_32px_120px_-30px_rgba(0,0,0,0.6)] sm:p-14">
+        <div className="relative mx-auto overflow-hidden rounded-3xl border border-border/60 bg-card/50 p-10 text-center backdrop-blur-md shadow-[0_8px_28px_-24px_rgba(16,24,40,0.16)] dark:shadow-[0_32px_120px_-30px_rgba(0,0,0,0.6)] sm:p-14">
           <span
             aria-hidden
             className="pointer-events-none absolute inset-x-12 top-0 h-px bg-gradient-to-r from-transparent via-primary to-transparent"
@@ -44,27 +44,12 @@ export async function Closer() {
               <Button
                 asChild
                 size="lg"
-                className="group h-12 rounded-full px-6 shadow-[0_8px_30px_-8px_var(--glow-cyan)]"
+                className="group h-12 rounded-full px-6 shadow-[0_4px_16px_-12px_rgba(16,185,129,0.24)] dark:shadow-[0_8px_30px_-8px_var(--glow-cyan)]"
               >
                 <Link href="/contact">
                   {tA("getInTouch")}
-                  <ArrowRight className="ms-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
+                  <ArrowRight className="ms-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5 rtl:group-hover:translate-x-0" />
                 </Link>
-              </Button>
-              <Button
-                asChild
-                size="lg"
-                variant="outline"
-                className="h-12 rounded-full border-border/60 bg-card/40 px-6 backdrop-blur-md hover:bg-card/70"
-              >
-                <a
-                  href="https://calendly.com/ahmedalayde86/30min"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <Calendar className="me-2 h-4 w-4" />
-                  {tA("bookCall")}
-                </a>
               </Button>
             </div>
           </Reveal>

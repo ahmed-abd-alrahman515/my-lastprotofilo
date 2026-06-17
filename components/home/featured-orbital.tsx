@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import Image from "next/image";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import {
   motion,
   AnimatePresence,
@@ -15,12 +15,13 @@ import {
 import { ArrowUpRight } from "lucide-react";
 
 import { Link } from "@/i18n/navigation";
-import { categoryMeta, type Project } from "@/lib/projects-data";
+import { localizeProject, type Project } from "@/lib/projects-data";
 import { cn } from "@/lib/utils";
 import { Container, Eyebrow, Heading, Lead, Reveal, Magnetic, IPhoneMockup } from "@/components/system";
 import { Button } from "@/components/ui/button";
 import { themeFor } from "@/components/projects/accent";
 import { useIsMobile } from "@/components/projects/use-projects-ui";
+import { localeDirection, type Locale } from "@/i18n/routing";
 
 const ANGLE_STEP = 0.5; // radians between adjacent projects on the arc
 const AUTO_MS = 4600; // auto-rotation cadence
@@ -204,6 +205,8 @@ function OrbitItem({
 
 function FeaturedPanel({ project, index, total }: { project: Project; index: number; total: number }) {
   const t = useTranslations("projects.labels");
+  const locale = useLocale() as Locale;
+  const isRtl = localeDirection[locale] === "rtl";
   const theme = themeFor(project);
   return (
     <AnimatePresence mode="wait">
@@ -217,7 +220,7 @@ function FeaturedPanel({ project, index, total }: { project: Project; index: num
           show: { transition: { staggerChildren: 0.06, delayChildren: 0.04 } },
           out: { opacity: 0, transition: { duration: 0.2 } },
         }}
-        className="flex max-w-md flex-col gap-4"
+        className={cn("flex max-w-md flex-col gap-4", isRtl && "items-end text-right")}
       >
         <motion.div
           variants={{ hidden: { opacity: 0, y: 16 }, show: { opacity: 1, y: 0 } }}
@@ -235,7 +238,7 @@ function FeaturedPanel({ project, index, total }: { project: Project; index: num
               theme.text,
             )}
           >
-            {categoryMeta[project.category ?? "platform"].label}
+            {t(project.category ?? "platform")}
           </span>
         </motion.div>
 
@@ -285,6 +288,7 @@ function FeaturedPanel({ project, index, total }: { project: Project; index: num
 }
 
 function DesktopOrbital({ projects }: { projects: Project[] }) {
+  const t = useTranslations("projects.labels");
   const reduced = useReducedMotion() ?? false;
   const total = projects.length;
 
@@ -506,13 +510,13 @@ function DesktopOrbital({ projects }: { projects: Project[] }) {
       </motion.div>
 
       {/* progress dots */}
-      <div className="absolute bottom-2 left-1/2 z-30 flex -translate-x-1/2 items-center gap-2 md:left-auto md:right-6 md:translate-x-0">
+      <div className="absolute -bottom-6 left-1/2 z-30 flex -translate-x-1/2 items-center gap-2 md:left-auto md:right-6 md:-bottom-4 md:translate-x-0">
         {projects.map((p, i) => (
           <button
             key={p.id}
             type="button"
             onClick={() => setActive(i)}
-            aria-label={`Show ${p.title}`}
+            aria-label={t("showProject", { title: p.title })}
             className={cn(
               "h-1.5 rounded-full transition-all duration-500",
               i === active ? "w-6 bg-primary shadow-[0_0_12px_var(--glow-emerald)]" : "w-1.5 bg-foreground/25 hover:bg-foreground/50",
@@ -522,8 +526,8 @@ function DesktopOrbital({ projects }: { projects: Project[] }) {
       </div>
 
       {/* drag hint */}
-      <div className="pointer-events-none absolute bottom-2 left-1/2 z-30 -translate-x-1/2 font-mono text-[9px] uppercase tracking-[0.3em] text-muted-foreground/50 md:left-6 md:translate-x-0">
-        drag · scroll
+      <div className="pointer-events-none absolute -bottom-11 left-1/2 z-30 -translate-x-1/2 font-mono text-[9px] uppercase tracking-[0.3em] text-muted-foreground/50 md:left-6 md:-bottom-9 md:translate-x-0">
+        {t("dragScroll")}
       </div>
     </div>
   );
@@ -531,105 +535,252 @@ function DesktopOrbital({ projects }: { projects: Project[] }) {
 
 function MobileOrbital({ projects }: { projects: Project[] }) {
   const t = useTranslations("projects.labels");
+  const locale = useLocale() as Locale;
+  const isRtl = localeDirection[locale] === "rtl";
   const trackRef = React.useRef<HTMLDivElement>(null);
-  const [scrollX, setScrollX] = React.useState(0);
-  const [vw, setVw] = React.useState(0);
+  const [active, setActive] = React.useState(0);
+  const cardRefs = React.useRef<Array<HTMLButtonElement | null>>([]);
 
   React.useEffect(() => {
-    setVw(window.innerWidth);
-    const onResize = () => setVw(window.innerWidth);
-    window.addEventListener("resize", onResize);
-    return () => window.removeEventListener("resize", onResize);
-  }, []);
+    const track = trackRef.current;
+    if (!track) return;
 
-  // Coverflow: each card rotates/scales by its distance from the viewport centre.
-  const onScroll = () => {
-    if (trackRef.current) setScrollX(trackRef.current.scrollLeft);
+    const updateActive = () => {
+      const railRect = track.getBoundingClientRect();
+      const railCenter = railRect.left + railRect.width / 2;
+      let nearest = 0;
+      let nearestDistance = Number.POSITIVE_INFINITY;
+
+      cardRefs.current.forEach((card, index) => {
+        if (!card) return;
+        const rect = card.getBoundingClientRect();
+        const cardCenter = rect.left + rect.width / 2;
+        const distance = Math.abs(cardCenter - railCenter);
+        if (distance < nearestDistance) {
+          nearestDistance = distance;
+          nearest = index;
+        }
+      });
+
+      setActive((prev) => (prev === nearest ? prev : nearest));
+    };
+
+    updateActive();
+    track.addEventListener("scroll", updateActive, { passive: true });
+    window.addEventListener("resize", updateActive);
+    return () => {
+      track.removeEventListener("scroll", updateActive);
+      window.removeEventListener("resize", updateActive);
+    };
+  }, [projects.length]);
+
+  const activeProject = projects[active] ?? projects[0];
+  const activeTheme = themeFor(activeProject);
+
+  const focusCard = (index: number) => {
+    setActive(index);
+    cardRefs.current[index]?.scrollIntoView({
+      behavior: "smooth",
+      inline: "center",
+      block: "nearest",
+    });
   };
 
   return (
-    <div
-      ref={trackRef}
-      onScroll={onScroll}
-      className="flex snap-x snap-mandatory gap-4 overflow-x-auto px-[12vw] pb-8 pt-4 [perspective:1200px] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-    >
-      {projects.map((project, i) => {
-        const theme = themeFor(project);
-        const isMobileApp = (project.category ?? "platform") === "mobile";
-        // Card centre vs viewport centre (cards are ~76vw + 4vw gap apart).
-        const cardW = vw * 0.76 + 16;
-        const cardCentre = i * cardW + cardW / 2 + vw * 0.12;
-        const dist = vw ? (cardCentre - scrollX - vw / 2) / vw : 0;
-        const clamped = Math.max(-1.2, Math.min(1.2, dist));
-        const rotateY = clamped * -22;
-        const scale = 1 - Math.min(Math.abs(clamped) * 0.14, 0.22);
-        const opacity = 1 - Math.min(Math.abs(clamped) * 0.4, 0.55);
+    <div className="relative overflow-hidden px-4 pt-4">
+      <div
+        aria-hidden
+        className={cn(
+          "pointer-events-none absolute inset-x-[12%] top-8 h-56 rounded-full blur-3xl",
+          activeTheme.glow,
+        )}
+      />
 
-        return (
+      <div className="relative mx-auto max-w-md">
+        <div className={cn("mb-6 space-y-4", isRtl && "text-right")}>
+          <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.28em] text-muted-foreground">
+            <span className={cn("h-1.5 w-1.5 rounded-full", activeTheme.dot)} />
+            {t("nowFeatured")} · {String(active + 1).padStart(2, "0")} / {String(projects.length).padStart(2, "0")}
+          </div>
+
+          <div>
+            <span
+              className={cn(
+                "inline-flex rounded-full border bg-background/55 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.2em] backdrop-blur-md",
+                activeTheme.border,
+                activeTheme.text,
+              )}
+            >
+              {t(activeProject.category ?? "platform")}
+            </span>
+          </div>
+
+          <div className="space-y-3">
+            <h3 className="text-balance text-[1.95rem] font-semibold leading-[1.08] tracking-tight text-foreground">
+              {activeProject.title}
+            </h3>
+            <p className="max-w-sm text-sm leading-7 text-foreground/75">
+              {activeProject.description}
+            </p>
+          </div>
+
+          <div className="flex flex-wrap gap-1.5">
+            {activeProject.technologies.slice(0, 5).map((tech) => (
+              <span
+                key={tech}
+                className="rounded-md border border-primary/20 bg-primary/10 px-2 py-0.5 font-mono text-[10px] text-primary"
+              >
+                {tech}
+              </span>
+            ))}
+          </div>
+
           <Link
-            key={project.id}
-            href={`/projects/${project.id}`}
-            style={{
-              transform: `perspective(1200px) rotateY(${rotateY}deg) scale(${scale})`,
-              opacity,
-            }}
+            href={`/projects/${activeProject.id}`}
             className={cn(
-              "group relative flex w-[76vw] shrink-0 snap-center flex-col overflow-hidden rounded-[1.5rem] border bg-gradient-to-b from-white/[0.07] to-white/[0.015] backdrop-blur-xl transition-[opacity,transform] duration-200 will-change-transform",
-              theme.border,
+              "inline-flex items-center gap-2 rounded-full border bg-foreground/[0.04] px-5 py-2.5 text-sm font-medium text-foreground transition-all duration-300 hover:bg-foreground/[0.08]",
+              activeTheme.border,
             )}
           >
-            <div className="relative aspect-[16/11] w-full overflow-hidden">
-              {isMobileApp ? (
-                <div className="absolute inset-0 flex items-center justify-center bg-[radial-gradient(circle_at_50%_30%,rgba(255,255,255,0.06),transparent_70%)]">
-                  <div className="scale-[0.55]">
-                    <IPhoneMockup src={project.image || "/placeholder.svg"} alt={project.title} chassis="graphite" />
-                  </div>
-                </div>
-              ) : (
-                <Image
-                  src={project.image || "/placeholder.svg"}
-                  alt={project.title}
-                  fill
-                  sizes="76vw"
-                  className="object-cover"
-                />
-              )}
-              <div className="absolute inset-0 bg-gradient-to-t from-background via-background/25 to-transparent" />
-              <span
+            {t("viewFullCaseStudy")}
+            <ArrowUpRight className="h-4 w-4 rtl:scale-x-[-1]" />
+          </Link>
+        </div>
+
+        <div
+          ref={trackRef}
+          className={cn(
+            "flex snap-x snap-mandatory gap-4 overflow-x-auto pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
+            isRtl && "flex-row-reverse",
+          )}
+          style={{ scrollPaddingInline: "1rem" }}
+        >
+          {projects.map((project, i) => {
+            const theme = themeFor(project);
+            const isMobileApp = (project.category ?? "platform") === "mobile";
+            const isActive = i === active;
+
+            return (
+              <button
+                key={project.id}
+                ref={(node) => {
+                  cardRefs.current[i] = node;
+                }}
+                type="button"
+                onClick={() => focusCard(i)}
                 className={cn(
-                  "absolute left-4 top-4 rounded-full border bg-background/60 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.2em] backdrop-blur-md",
+                  "group relative w-[84vw] max-w-[21rem] shrink-0 snap-center overflow-hidden rounded-[1.9rem] border text-left transition-all duration-500",
+                  isRtl && "text-right",
                   theme.border,
-                  theme.text,
+                  isActive
+                    ? "scale-100 bg-gradient-to-b from-white/[0.08] to-white/[0.02] shadow-[0_24px_70px_rgba(0,0,0,0.35)]"
+                    : "scale-[0.94] bg-gradient-to-b from-white/[0.05] to-white/[0.015] opacity-70",
                 )}
               >
-                {String(i + 1).padStart(2, "0")} / {String(projects.length).padStart(2, "0")}
-              </span>
-            </div>
-            <div className="flex flex-1 flex-col gap-3 p-5">
-              <h3 className="text-balance text-lg font-semibold leading-snug tracking-tight text-foreground">
-                {project.title}
-              </h3>
-              <p className="line-clamp-2 text-sm leading-relaxed text-foreground/75">{project.description}</p>
-              <div className="flex flex-wrap gap-1.5">
-                {project.technologies.slice(0, 3).map((tech) => (
+                <div
+                  aria-hidden
+                  className={cn(
+                    "pointer-events-none absolute inset-x-6 top-6 h-24 rounded-full blur-3xl transition-opacity duration-500",
+                    theme.glow,
+                    isActive ? "opacity-90" : "opacity-40",
+                  )}
+                />
+
+                <div className="relative border-b border-white/6 p-3">
+                  <div className="flex items-center gap-2">
+                    <span className="h-2.5 w-2.5 rounded-full bg-rose-400/85" />
+                    <span className="h-2.5 w-2.5 rounded-full bg-amber-300/85" />
+                    <span className="h-2.5 w-2.5 rounded-full bg-emerald-400/85" />
+                    <span className="ml-2 truncate font-mono text-[10px] uppercase tracking-[0.24em] text-foreground/45">
+                      {project.title.split(/[–-]/)[0]}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="relative aspect-[16/11] overflow-hidden">
+                  {isMobileApp ? (
+                    <div className="absolute inset-0 flex items-center justify-center bg-[radial-gradient(circle_at_50%_20%,rgba(255,255,255,0.08),transparent_70%)]">
+                      <div className={cn("transition-transform duration-500", isActive ? "scale-[0.68]" : "scale-[0.58]")}>
+                        <IPhoneMockup
+                          src={project.image || "/placeholder.svg"}
+                          alt={project.title}
+                          chassis="graphite"
+                        />
+                      </div>
+                    </div>
+                  ) : (
+                    <>
+                      <Image
+                        src={project.image || "/placeholder.svg"}
+                        alt={project.title}
+                        fill
+                        sizes="84vw"
+                        className={cn(
+                          "object-cover transition-transform duration-700",
+                          isActive ? "scale-100" : "scale-[1.03]",
+                        )}
+                      />
+                      <div className="absolute inset-x-[14%] bottom-3 h-10 rounded-full bg-emerald-400/15 blur-2xl" />
+                    </>
+                  )}
+                  <div className="absolute inset-0 bg-gradient-to-t from-background via-background/18 to-transparent" />
                   <span
-                    key={tech}
-                    className="rounded-md border border-primary/20 bg-primary/10 px-2 py-0.5 font-mono text-[10px] text-primary"
+                    className={cn(
+                      "absolute top-3 rounded-full border bg-background/65 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.2em] backdrop-blur-md",
+                      isRtl ? "right-3" : "left-3",
+                      theme.border,
+                      theme.text,
+                    )}
                   >
-                    {tech}
+                    {String(i + 1).padStart(2, "0")} / {String(projects.length).padStart(2, "0")}
                   </span>
-                ))}
-              </div>
-              <div className="mt-auto flex items-center justify-between border-t border-foreground/5 pt-4">
-                <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
-                  {t("viewFullCaseStudy")}
-                </span>
-                <ArrowUpRight className={cn("h-4 w-4", theme.text)} />
-              </div>
-            </div>
-          </Link>
-        );
-      })}
+                </div>
+
+                <div className="space-y-3 p-4">
+                  <h4 className="line-clamp-2 text-xl font-semibold leading-snug tracking-tight text-foreground">
+                    {project.title}
+                  </h4>
+                  <p className="line-clamp-2 text-sm leading-6 text-foreground/70">
+                    {project.description}
+                  </p>
+                  <div className="flex items-center justify-between border-t border-foreground/6 pt-3">
+                    <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
+                      {t("viewFullCaseStudy")}
+                    </span>
+                    <ArrowUpRight
+                      className={cn(
+                        "h-4 w-4 transition-transform duration-300",
+                        theme.text,
+                        isActive && "translate-x-0.5 -translate-y-0.5",
+                      )}
+                    />
+                  </div>
+                </div>
+              </button>
+            );
+          })}
+        </div>
+
+        <div className="mt-4 flex items-center justify-center gap-2">
+          {projects.map((project, i) => {
+            const theme = themeFor(project);
+            const isActive = i === active;
+            return (
+              <button
+                key={project.id}
+                type="button"
+                onClick={() => focusCard(i)}
+                aria-label={project.title}
+                aria-current={isActive}
+                className={cn(
+                  "h-1.5 rounded-full transition-all duration-300",
+                  isActive ? cn("w-8", theme.dot) : "w-1.5 bg-foreground/20",
+                )}
+              />
+            );
+          })}
+        </div>
+      </div>
     </div>
   );
 }
@@ -638,8 +789,14 @@ export function FeaturedOrbital({ projects }: { projects: Project[] }) {
   const t = useTranslations("home.work");
   const tA = useTranslations("actions");
   const isMobile = useIsMobile();
+  const locale = useLocale() as Locale;
+  const isRtl = localeDirection[locale] === "rtl";
+  const localizedProjects = React.useMemo(
+    () => projects.map((project) => localizeProject(project, locale)),
+    [locale, projects],
+  );
 
-  if (projects.length === 0) return null;
+  if (localizedProjects.length === 0) return null;
 
   return (
     <section id="work" className="relative isolate overflow-x-clip py-24 sm:py-32">
@@ -656,17 +813,19 @@ export function FeaturedOrbital({ projects }: { projects: Project[] }) {
             </Heading>
           </Reveal>
           <Reveal delay={0.12}>
-            <Lead className="mx-auto mt-5 text-center">{t("lead")}</Lead>
+            <Lead className={cn("mx-auto mt-5 text-center", isRtl && "max-w-[34rem] leading-8")}>
+              {t("lead")}
+            </Lead>
           </Reveal>
         </div>
       </Container>
 
       <Reveal delay={0.1} className="mt-14">
         {isMobile ? (
-          <MobileOrbital projects={projects} />
+          <MobileOrbital projects={localizedProjects} />
         ) : (
           <Container size="xl">
-            <DesktopOrbital projects={projects} />
+            <DesktopOrbital projects={localizedProjects} />
           </Container>
         )}
       </Reveal>

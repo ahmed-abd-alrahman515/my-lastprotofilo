@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { motion, useReducedMotion } from "framer-motion";
 import { Link } from "@/i18n/navigation";
 import {
@@ -100,12 +100,13 @@ const stackGroups: Record<StackCat, { name: string; level: number }[]> = {
 
 function ArchitectureDiagram() {
   const t = useTranslations("skills.architecture");
+  const locale = useLocale();
   const reduce = useReducedMotion();
   const nodes = [
-    { label: "Customer App", sub: "React Native" },
-    { label: "Delivery App", sub: "React Native" },
-    { label: "Admin App", sub: "React Native" },
-    { label: "Web Dashboard", sub: "Next.js / Blade" },
+    { label: locale === "ar" ? "تطبيق العميل" : "Customer App", sub: "React Native" },
+    { label: locale === "ar" ? "تطبيق التوصيل" : "Delivery App", sub: "React Native" },
+    { label: locale === "ar" ? "لوحة التحكم" : "Admin App", sub: "React Native" },
+    { label: locale === "ar" ? "لوحة ويب" : "Web Dashboard", sub: "Next.js / Blade" },
   ];
   const integrations = [
     { label: "Firebase", sub: "Push + FCM" },
@@ -227,6 +228,7 @@ function ArchitectureDiagram() {
 
 function TechStackCarousel() {
   const t = useTranslations("skills.v2.stack");
+  const tProjects = useTranslations("projects.labels");
   const reduce = useReducedMotion();
   const [cat, setCat] = React.useState<StackCat>("frontend");
   const items = stackGroups[cat];
@@ -261,7 +263,7 @@ function TechStackCarousel() {
 
       <div className="p-4 sm:p-6">
         {/* Category commands (interactive terminal-style tabs) */}
-        <div className="flex flex-wrap items-center gap-2" role="tablist" aria-label="categories">
+        <div className="flex flex-wrap items-center gap-2" role="tablist" aria-label={tProjects("categories")}>
           {stackCatOrder.map((c) => {
             const active = cat === c;
             return (

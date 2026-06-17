@@ -23,7 +23,6 @@
     "viewServices": "عرض الخدمات",
     "contactMe": "تواصل معي",
     "downloadCv": "تحميل السيرة الذاتية",
-    "bookCall": "احجز مكالمة",
     "viewAll": "عرض الكل",
     "viewAllSkills": "عرض كل المهارات",
     "getInTouch": "تواصل معي",
@@ -33,6 +32,11 @@
     "learnMore": "اعرف المزيد"
   },
   "home": {
+    "selectedSystems": {
+      "eyebrow": "أنظمة مختارة",
+      "heading": "بعض الأنظمة التي أطلقتها من البداية للنهاية.",
+      "lead": "اسحب أو مرّر أو استخدم الأسهم، ثم افتح دراسة الحالة التي تريدها."
+    },
     "hero": {
       "eyebrow": "أحمد العايدي · مطور Full-Stack",
       "headline": "أبني أنظمة أعمال متكاملة، ليس مجرد مواقع.",
@@ -52,7 +56,7 @@
         "api": "APIs ومعمارية",
         "mobile": "تطبيقات الموبايل"
       },
-      "status": "متاح لمشاريع جديدة",
+      "status": "متاح لتنفيذ مشاريع جديدة",
       "scrollHint": "مرّر للاستكشاف",
       "headlineV2": "أبني أنظمة جاهزة للإنتاج لأعمال حقيقية.",
       "headlineAccentV2": "لأعمال حقيقية.",
@@ -171,7 +175,7 @@
       "coreSub": "نظام واحد متصل",
       "hint": "مرّر فوق أي عقدة لاستكشاف البنية",
       "sliderEyebrow": "استكشف التقنيات",
-      "sliderHeading": "بنية واحدة، كل الطبقات.",
+      "sliderHeading": "بنية واحدة لكل طبقة",
       "nodes": {
         "frontend": {
           "label": "الواجهة الأمامية",
@@ -870,7 +874,7 @@
       "gridView": "شبكة",
       "prevProject": "المشروع السابق",
       "nextProject": "المشروع التالي",
-      "dragHint": "اسحب أو مرّر أو استخدم ← → للاستكشاف",
+      "dragHint": "اسحب أو استخدم الأسهم للاستكشاف",
       "projectType": "مشروع",
       "exploreShowcase": "عرض مميز",
       "experienceBadge": "معرض تفاعلي",
@@ -884,8 +888,33 @@
       "modeOrbitalDesc": "عرض جاذبي",
       "scrollToExplore": "مرّر للاستكشاف",
       "nowFeatured": "المعروض الآن",
-      "viewMode": "وضع العرض",
-      "projectsCount": "{count} مشروع"
+      "viewMode": "طريقة العرض",
+      "viewModeHint": "بدّل طريقة عرض المشاريع",
+      "viewModeHelper": "جرّب أكثر من عرض لاستكشاف الأعمال",
+      "previous": "السابق",
+      "next": "التالي",
+      "showProject": "اعرض مشروع {title}",
+      "dragScroll": "اسحب ومرّر",
+      "goToScreen": "انتقل إلى الشاشة {index}",
+      "goToSlide": "انتقل إلى الشريحة {index}",
+      "categories": "الفئات",
+      "projectsCount": "{count} مشروع",
+      "saas": "SaaS",
+      "dashboard": "لوحات التحكم",
+      "mobile": "تطبيقات موبايل",
+      "erp": "ERP",
+      "platform": "المنصات",
+      "brand": "مواقع العلامات التجارية",
+      "cms": "أنظمة CMS",
+      "uiux": "واجهة وتجربة المستخدم",
+      "fullstack": "تطوير متكامل",
+      "api": "واجهات API",
+      "crm": "CRM",
+      "ecommerce": "التجارة الإلكترونية",
+      "customerApp": "تطبيق العميل",
+      "deliveryApp": "تطبيق التوصيل",
+      "adminDashboard": "لوحة التحكم",
+      "salesRepApp": "تطبيق مندوب المبيعات"
     },
     "caseStudy": {
       "backToArchive": "العودة للأرشيف",
@@ -912,7 +941,7 @@
       "stackMobile": "Mobile",
       "stackIntegrations": "تكاملات",
       "stackInfrastructure": "البنية التحتية",
-      "mobileAppsEyebrow": "تطبيقات الموبايل",
+      "mobileAppsEyebrow": "تطبيقات موبايل",
       "mobileAppsTitle": "نظام الموبايل",
       "backendEyebrow": "أنظمة Backend",
       "backendTitle": "الخدمات والبيانات",
@@ -933,6 +962,9 @@
       "productionTitle": "جاهز للإطلاق والتشغيل",
       "galleryEyebrow": "المعرض",
       "galleryTitle": "في الواقع",
+      "desktopEyebrow": "تطبيق الديسكتوب",
+      "desktopTitle": "تجربة تطبيق الكاشير المكتبي",
+      "desktopHighlights": "أبرز نقاط الديسكتوب",
       "featuresEyebrow": "ميزات النظام",
       "featuresTitle": "ما الذي يفعله",
       "decisionsEyebrow": "قرارات تقنية",
@@ -949,8 +981,8 @@
       "ecosystemBadge": "دراسة حالة منظومة موبايل",
       "systemShowcaseEyebrow": "النظام / لوحة التحكم",
       "systemShowcaseTitle": "غرفة التحكم",
-      "mobileShowcaseEyebrow": "تطبيقات الموبايل",
-      "mobileShowcaseTitle": "التطبيقات المرافقة",
+      "mobileShowcaseEyebrow": "تطبيقات موبايل",
+      "mobileShowcaseTitle": "تطبيقات مرافقة",
       "ecosystemArchEyebrow": "بنية المنظومة",
       "ecosystemArchTitle": "كيف يتصل كل شيء",
       "jumpTo": "انتقل إلى القسم",
@@ -967,6 +999,7 @@
         "architecture": "البنية",
         "stack": "التقنيات",
         "screens": "الشاشات",
+        "desktop": "الديسكتوب",
         "features": "المميزات",
         "challenges": "التحديات",
         "results": "النتائج"
@@ -1003,7 +1036,8 @@
       "instant": "فوري",
       "code": "كود",
       "network": "شبكة",
-      "open": "فتح"
+      "open": "فتح",
+      "whatsAppAria": "تواصل مع أحمد عبر واتساب"
     },
     "cv": {
       "title": "تحميل السيرة الذاتية",
@@ -1023,6 +1057,7 @@
     "form": {
       "eyebrow": "أرسل رسالة",
       "heading": "احكِ لي عن المشروع",
+      "ariaLabel": "نموذج التواصل",
       "name": "الاسم الكامل",
       "email": "البريد الإلكتروني",
       "subject": "الموضوع",

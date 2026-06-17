@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import Image from "next/image";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { motion, useInView, useReducedMotion, useScroll, useSpring, useTransform } from "framer-motion";
 import { Link } from "@/i18n/navigation";
 import { ArrowUpRight } from "lucide-react";
@@ -15,6 +15,7 @@ import { cn } from "@/lib/utils";
 import { IPhoneMockup } from "@/components/system";
 import { themeFor } from "./accent";
 import { useIsMobile } from "./use-projects-ui";
+import { localeDirection, type Locale } from "@/i18n/routing";
 
 function TimelineCard({
   project,
@@ -26,10 +27,12 @@ function TimelineCard({
   side: "left" | "right";
 }) {
   const t = useTranslations("projects.labels");
+  const locale = useLocale() as Locale;
   const theme = themeFor(project);
-  const cs = resolveCaseStudy(project);
+  const cs = resolveCaseStudy(project, locale);
   const year = cs.meta?.timeline ?? cs.meta?.status ?? t("viewProject");
   const isMobileApp = (project.category ?? "platform") === "mobile";
+  const isRtl = localeDirection[locale] === "rtl";
 
   return (
     <Link
@@ -78,12 +81,12 @@ function TimelineCard({
               theme.text,
             )}
           >
-            {categoryMeta[project.category ?? "platform"].label}
+            {t(project.category ?? "platform")}
           </span>
         </div>
       </div>
 
-      <div className="flex flex-1 flex-col gap-3 p-6">
+      <div className={cn("flex flex-1 flex-col gap-3 p-6", isRtl && "text-right")}>
         <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
           <span className={cn("h-1.5 w-1.5 rounded-full", theme.dot)} />
           {String(index + 1).padStart(2, "0")}
@@ -118,7 +121,7 @@ function TimelineCard({
           <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
             {t("viewFullCaseStudy")}
           </span>
-          <ArrowUpRight className={cn("h-4 w-4 transition-all duration-500 group-hover:-translate-y-0.5 group-hover:translate-x-0.5", theme.text)} />
+          <ArrowUpRight className={cn("h-4 w-4 transition-all duration-500 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 rtl:scale-x-[-1]", theme.text)} />
         </div>
       </div>
     </Link>

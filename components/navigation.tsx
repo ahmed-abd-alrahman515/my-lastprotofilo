@@ -2,10 +2,11 @@
 
 import * as React from "react";
 import { Menu, X } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { AnimatePresence, motion } from "framer-motion";
 
 import { Link, usePathname } from "@/i18n/navigation";
+import { localeDirection, type Locale } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
@@ -22,10 +23,12 @@ const navLinks = [
 
 export function Navigation() {
   const t = useTranslations("nav");
+  const locale = useLocale() as Locale;
   const pathname = usePathname();
   const [open, setOpen] = React.useState(false);
   const [scrolled, setScrolled] = React.useState(false);
   const [hovered, setHovered] = React.useState<string | null>(null);
+  const isRtl = localeDirection[locale] === "rtl";
 
   React.useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -59,7 +62,12 @@ export function Navigation() {
         )}
       />
 
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
+      <div
+        className={cn(
+          "mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8",
+          isRtl && "md:flex-row-reverse",
+        )}
+      >
         <Link
           href="/"
           className="group inline-flex items-center gap-2 text-lg font-semibold tracking-tight text-foreground transition-colors hover:text-primary"
@@ -75,7 +83,10 @@ export function Navigation() {
         </Link>
 
         <nav
-          className="relative hidden items-center gap-0.5 rounded-full border border-primary/10 bg-card/30 p-1 backdrop-blur-xl md:flex"
+          className={cn(
+            "relative hidden items-center gap-1 rounded-full border border-primary/10 bg-card/30 p-1 backdrop-blur-xl md:flex",
+            isRtl && "flex-row-reverse",
+          )}
           onMouseLeave={() => setHovered(null)}
         >
           {navLinks.map((link) => {
@@ -91,6 +102,7 @@ export function Navigation() {
                   active || hovered === link.href
                     ? "text-primary"
                     : "text-muted-foreground hover:text-foreground",
+                  isRtl && "text-right",
                 )}
               >
                 {showPill && (
@@ -105,13 +117,18 @@ export function Navigation() {
               </Link>
             );
           })}
-          <div className="ms-1 flex items-center gap-1 border-s border-primary/10 ps-1.5">
+          <div
+            className={cn(
+              "ms-1 flex items-center gap-1 border-s border-primary/10 ps-1.5",
+              isRtl && "ms-0 me-1 border-e border-s-0 pe-1.5 ps-0",
+            )}
+          >
             <LocaleSwitcher />
             <ThemeToggle />
           </div>
         </nav>
 
-        <div className="flex items-center gap-1 md:hidden">
+        <div className={cn("flex items-center gap-1 md:hidden", isRtl && "flex-row-reverse")}>
           <LocaleSwitcher />
           <ThemeToggle />
           <Button
@@ -135,11 +152,11 @@ export function Navigation() {
             transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
             className="overflow-hidden border-t border-primary/10 bg-background/95 backdrop-blur-2xl md:hidden"
           >
-            <div className="flex flex-col gap-1 px-4 py-4">
+            <div className={cn("flex flex-col gap-1 px-4 py-4", isRtl && "text-right")}>
               {navLinks.map((link, i) => (
                 <motion.div
                   key={link.href}
-                  initial={{ opacity: 0, x: -12 }}
+                  initial={{ opacity: 0, x: isRtl ? 12 : -12 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.04 * i, duration: 0.3 }}
                 >

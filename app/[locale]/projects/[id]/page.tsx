@@ -3,7 +3,8 @@ import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { CaseStudyView } from "@/components/case-study-view";
 import { MobileEcosystemCaseStudy } from "@/components/mobile-ecosystem-case-study";
-import { getProjectCategories, projects } from "@/lib/projects-data";
+import { getProjectCategories, localizeProject, projects } from "@/lib/projects-data";
+import { getAbsoluteUrl, getLanguageAlternates, getLocalizedUrl, siteConfig } from "@/lib/site";
 
 interface ProjectPageProps {
   params: Promise<{ id: string; locale: string }>;
@@ -17,31 +18,52 @@ export async function generateMetadata({ params }: ProjectPageProps): Promise<Me
   const { id, locale } = await params;
   const project = projects.find((p) => p.id === id);
   if (!project) return {};
+  const localizedProject = localizeProject(project, locale);
+
   const t = await getTranslations({ locale, namespace: "projects.caseStudy" });
+  const path = `/projects/${project.id}`;
+  const canonical = getLocalizedUrl(locale as "en" | "ar", path);
+  const imageUrl = getAbsoluteUrl(project.image || siteConfig.ogImage);
+
   return {
-    title: `${project.title} — ${t("badge")}`,
-    description: project.description,
-    alternates: { canonical: `/projects/${project.id}` },
+    metadataBase: new URL(siteConfig.url),
+    title: `${localizedProject.title} - ${t("badge")}`,
+    description: localizedProject.description,
+    robots: { index: true, follow: true },
+    alternates: {
+      canonical,
+      languages: getLanguageAlternates(path),
+    },
     openGraph: {
-      title: project.title,
-      description: project.description,
-      images: project.image ? [{ url: project.image, alt: project.title }] : undefined,
+      title: localizedProject.title,
+      description: localizedProject.description,
+      url: canonical,
+      siteName: siteConfig.title,
+      images: [
+        {
+          url: imageUrl,
+          width: 1200,
+          height: 630,
+          alt: localizedProject.title,
+        },
+      ],
       type: "article",
     },
     twitter: {
       card: "summary_large_image",
-      title: project.title,
-      description: project.description,
-      images: project.image ? [project.image] : undefined,
+      title: localizedProject.title,
+      description: localizedProject.description,
+      images: [imageUrl],
     },
   };
 }
 
 export default async function ProjectPage({ params }: ProjectPageProps) {
-  const { id } = await params;
+  const { id, locale } = await params;
   const project = projects.find((p) => p.id === id);
 
   if (!project) notFound();
+  const localizedProject = localizeProject(project, locale);
 
   const projectCats = getProjectCategories(project);
   const related = projects
@@ -53,21 +75,42 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
     })
     .sort((a, b) => b.score - a.score)
     .slice(0, 6)
-    .map((r) => r.p);
+    .map((r) => localizeProject(r.p, locale));
 
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "CreativeWork",
-    name: project.title,
-    description: project.description,
-    image: project.image,
-    url: project.liveUrl ?? project.projectUrl,
-    keywords: project.technologies.join(", "),
+    name: localizedProject.title,
+    description: localizedProject.description,
+    image: getAbsoluteUrl(localizedProject.image || siteConfig.ogImage),
+    url:
+      localizedProject.liveUrl ??
+      localizedProject.projectUrl ??
+      getLocalizedUrl(locale as "en" | "ar", `/projects/${localizedProject.id}`),
+    keywords: localizedProject.technologies.join(", "),
+    inLanguage: locale,
     creator: {
       "@type": "Person",
-      name: "Ahmed Alaydi",
-      url: "https://ahmed-alaydi.com",
+      name: siteConfig.personName,
+      url: siteConfig.url,
     },
+  };
+
+  const softwareJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    name: localizedProject.title,
+    description: localizedProject.description,
+    applicationCategory: localizedProject.category ?? "BusinessApplication",
+    operatingSystem: localizedProject.hasMobileApps ? "iOS, Android, Web" : "Web",
+    image: getAbsoluteUrl(localizedProject.image || siteConfig.ogImage),
+    inLanguage: locale,
+    author: {
+      "@type": "Person",
+      name: siteConfig.personName,
+      url: siteConfig.url,
+    },
+    url: getLocalizedUrl(locale as "en" | "ar", `/projects/${localizedProject.id}`),
   };
 
   return (
@@ -76,10 +119,14 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      {project.hasMobileApps ? (
-        <MobileEcosystemCaseStudy project={project} related={related} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareJsonLd) }}
+      />
+      {localizedProject.hasMobileApps ? (
+        <MobileEcosystemCaseStudy project={localizedProject} related={related} />
       ) : (
-        <CaseStudyView project={project} related={related} />
+        <CaseStudyView project={localizedProject} related={related} />
       )}
     </>
   );

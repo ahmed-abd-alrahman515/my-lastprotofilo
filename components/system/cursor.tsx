@@ -41,7 +41,15 @@ export function CustomCursor() {
     const fine =
       typeof window !== "undefined" &&
       window.matchMedia("(hover: hover) and (pointer: fine)").matches;
-    if (!fine) return;
+    const nav = navigator as Navigator & {
+      connection?: { saveData?: boolean };
+      deviceMemory?: number;
+    };
+    const lowPower =
+      (nav.connection?.saveData ?? false) ||
+      (nav.hardwareConcurrency ?? 8) <= 4 ||
+      (nav.deviceMemory ?? 8) <= 4;
+    if (!fine || lowPower) return;
 
     setEnabled(true);
     document.documentElement.classList.add("has-custom-cursor");

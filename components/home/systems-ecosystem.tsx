@@ -84,7 +84,8 @@ const ECO_PARTICLES = [
   { left: 40, top: 36, s: 1.2, d: 2.8, dur: 13, o: 0.38 },
 ];
 
-function EcosystemBackground({ reduced }: { reduced: boolean }) {
+function EcosystemBackground({ reduced, isMobile }: { reduced: boolean; isMobile: boolean }) {
+  const visibleParticles = isMobile ? ECO_PARTICLES.slice(0, 4) : ECO_PARTICLES;
   return (
     <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
       {/* depth gradient */}
@@ -125,7 +126,7 @@ function EcosystemBackground({ reduced }: { reduced: boolean }) {
 
       {/* particles */}
       {!reduced &&
-        ECO_PARTICLES.map((p, i) => (
+        visibleParticles.map((p, i) => (
           <motion.span
             key={i}
             className="absolute rounded-full bg-emerald-200/70"
@@ -571,6 +572,7 @@ function slideTransform(offset: number) {
 function SystemsSlider() {
   const t = useTranslations("home.systems.items");
   const te = useTranslations("home.ecosystem");
+  const tp = useTranslations("projects.labels");
   const reduced = useReducedMotion() ?? false;
   const [active, setActive] = React.useState(2);
   const total = SLIDES.length;
@@ -705,12 +707,12 @@ function SystemsSlider() {
       </div>
 
       {/* controls */}
-      <div className="mt-8 flex items-center justify-center gap-4">
+      <div className="mt-10 flex items-center justify-center gap-4 sm:mt-12">
         <button
           type="button"
           onClick={() => go(-1)}
           disabled={active === 0}
-          aria-label="Previous"
+          aria-label={tp("previous")}
           className="flex h-11 w-11 items-center justify-center rounded-full border border-foreground/15 bg-foreground/[0.04] transition-all hover:border-foreground/30 hover:bg-foreground/[0.08] disabled:opacity-30"
         >
           <ArrowLeft className="h-4 w-4 rtl:rotate-180" />
@@ -721,7 +723,7 @@ function SystemsSlider() {
               key={s.key}
               type="button"
               onClick={() => setActive(i)}
-              aria-label={`${i + 1}`}
+              aria-label={tp("goToSlide", { index: i + 1 })}
               className={cn("h-1.5 rounded-full transition-all duration-500", i === active ? "w-8 bg-emerald-300" : "w-1.5 bg-foreground/20 hover:bg-foreground/40")}
             />
           ))}
@@ -730,7 +732,7 @@ function SystemsSlider() {
           type="button"
           onClick={() => go(1)}
           disabled={active === total - 1}
-          aria-label="Next"
+          aria-label={tp("next")}
           className="flex h-11 w-11 items-center justify-center rounded-full border border-foreground/15 bg-foreground/[0.04] transition-all hover:border-foreground/30 hover:bg-foreground/[0.08] disabled:opacity-30"
         >
           <ArrowRight className="h-4 w-4 rtl:rotate-180" />
@@ -751,9 +753,10 @@ function SystemsSlider() {
 
 export function SystemsEcosystem() {
   const reduced = useReducedMotion() ?? false;
+  const isMobile = useIsMobile();
   return (
     <div className="relative">
-      <EcosystemBackground reduced={reduced} />
+      <EcosystemBackground reduced={reduced} isMobile={isMobile} />
       <EcosystemDiagram />
       <SystemsSlider />
     </div>

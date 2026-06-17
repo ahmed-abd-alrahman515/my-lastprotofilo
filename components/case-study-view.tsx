@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import {
   ArrowLeft,
@@ -14,6 +14,7 @@ import {
   ServerCog,
   Plug,
   LayoutDashboard,
+  Monitor,
   ShieldCheck,
   Gauge,
   Sparkles,
@@ -28,6 +29,7 @@ import { IPhoneMockup } from "@/components/system";
 import {
   categoryMeta,
   getProjectCategories,
+  localizeProject,
   resolveCaseStudy,
   type Project,
 } from "@/lib/projects-data";
@@ -50,6 +52,7 @@ import {
   type Shot,
 } from "@/components/case-study/ui";
 import { cn } from "@/lib/utils";
+import { localeDirection, type Locale } from "@/i18n/routing";
 
 export function CaseStudyView({
   project,
@@ -59,15 +62,34 @@ export function CaseStudyView({
   related: Project[];
 }) {
   const t = useTranslations("projects.caseStudy");
-  const cs = resolveCaseStudy(project);
-  const liveHref = project.liveUrl ?? project.projectUrl;
-  const categories = getProjectCategories(project);
-  const isMobile = project.category === "mobile";
+  const tLabels = useTranslations("projects.labels");
+  const locale = useLocale() as Locale;
+  const localizedProject = React.useMemo(() => localizeProject(project, locale), [locale, project]);
+  const cs = resolveCaseStudy(project, locale);
+  const liveHref = localizedProject.liveUrl ?? localizedProject.projectUrl;
+  const categories = getProjectCategories(localizedProject);
+  const isMobile = localizedProject.category === "mobile";
+  const isRtl = localeDirection[locale] === "rtl";
+  const localizeAppLabel = React.useCallback(
+    (value: string) => {
+      const normalized = value.trim().toLowerCase();
+      if (normalized === "customer app" || normalized === "customer") return tLabels("customerApp");
+      if (normalized === "delivery app" || normalized === "delivery") return tLabels("deliveryApp");
+      if (normalized === "admin dashboard" || normalized === "admin app" || normalized === "admin") {
+        return tLabels("adminDashboard");
+      }
+      if (normalized === "sales rep app" || normalized === "sales representative app") {
+        return tLabels("salesRepApp");
+      }
+      return value;
+    },
+    [tLabels],
+  );
 
   // Only consider sibling mobile apps when THIS project explicitly ships one.
   const ecosystemApps = project.hasMobileApp
     ? related.filter(
-        (r) => r.group && r.group === project.group && r.category === "mobile",
+        (r) => r.group && r.group === localizedProject.group && r.category === "mobile",
       )
     : [];
 
@@ -95,6 +117,15 @@ export function CaseStudyView({
       })),
     [cs.gallery],
   );
+  const desktopShots: Shot[] = React.useMemo(
+    () =>
+      (cs.desktopApplication?.screens ?? []).map((screen) => ({
+        src: screen.src,
+        title: screen.title,
+        description: screen.description,
+      })),
+    [cs.desktopApplication?.screens],
+  );
 
   const mobileTrio = React.useMemo(() => {
     if (ecosystemApps.length > 0) {
@@ -107,13 +138,13 @@ export function CaseStudyView({
       }));
     }
     return (cs.mobileApps ?? []).slice(0, 3).map((a) => ({
-      name: a.name,
+      name: localizeAppLabel(a.name),
       description: a.description,
-      image: a.image ?? project.image,
+        image: a.image ?? localizedProject.image,
       href: undefined as string | undefined,
-      role: a.role,
+      role: localizeAppLabel(a.role),
     }));
-  }, [ecosystemApps, cs.mobileApps, project.image]);
+  }, [ecosystemApps, cs.mobileApps, localizedProject.image, localizeAppLabel]);
 
   // Build sticky nav from the sections that actually render.
   const navItems: NavItem[] = React.useMemo(() => {
@@ -125,11 +156,14 @@ export function CaseStudyView({
     if (cs.architecture) items.push({ id: "architecture", label: t("nav.architecture") });
     if (stackGroups.length > 0) items.push({ id: "stack", label: t("nav.stack") });
     if (galleryShots.length > 0) items.push({ id: "screens", label: t("nav.screens") });
+    if (desktopShots.length > 0) {
+      items.push({ id: "desktop", label: cs.desktopApplication?.navLabel ?? t("nav.desktop") });
+    }
     if (cs.systemFeatures?.length) items.push({ id: "features", label: t("nav.features") });
     if (cs.challenges?.length) items.push({ id: "challenges", label: t("nav.challenges") });
     if (cs.outcomes?.length) items.push({ id: "results", label: t("nav.results") });
     return items;
-  }, [cs, stackGroups.length, galleryShots.length, t]);
+  }, [cs, stackGroups.length, galleryShots.length, desktopShots.length, t]);
 
   return (
     <div className="relative isolate overflow-hidden bg-background text-foreground">
@@ -156,20 +190,20 @@ export function CaseStudyView({
             className="-ml-3 mb-8 text-foreground/80 hover:bg-foreground/[0.07] hover:text-foreground"
           >
             <Link href="/projects">
-              <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+              <ArrowLeft className="h-4 w-4 rtl:rotate-180" aria-hidden="true" />
               {t("backToArchive")}
             </Link>
           </Button>
 
           <div className="grid items-center gap-12 lg:grid-cols-[1.05fr_1fr]">
             <Reveal y={30}>
-              <div className="flex flex-wrap items-center gap-2">
+              <div className={cn("flex flex-wrap items-center gap-2", isRtl && "justify-end")}>
                 <span className="rounded-full border border-emerald-200/30 bg-emerald-200/10 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.22em] text-emerald-200">
                   {t("badge")}
                 </span>
-                {project.group && (
+                {localizedProject.group && (
                   <span className="rounded-full border border-foreground/10 bg-foreground/[0.04] px-3 py-1 font-mono text-[10px] uppercase tracking-[0.22em] text-foreground/80">
-                    {project.group}
+                    {localizedProject.group}
                   </span>
                 )}
                 {categories.map((c) => (
@@ -177,19 +211,19 @@ export function CaseStudyView({
                     key={c}
                     className="rounded-full border border-foreground/10 bg-foreground/[0.03] px-3 py-1 font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground"
                   >
-                    {categoryMeta[c].label}
+                    {tLabels(c)}
                   </span>
                 ))}
               </div>
 
-              <h1 className="mt-6 text-balance text-4xl font-bold leading-[1.05] tracking-tight sm:text-5xl lg:text-6xl">
-                {cs.heroHeadline ?? project.title}
+              <h1 className={cn("mt-6 text-balance text-4xl font-bold leading-[1.05] tracking-tight sm:text-5xl lg:text-6xl", isRtl && "text-right leading-[1.18]")}>
+                {cs.heroHeadline ?? localizedProject.title}
               </h1>
-              <p className="mt-5 max-w-2xl text-pretty text-lg leading-relaxed text-foreground/80">
-                {cs.heroSubline ?? project.description}
+              <p className={cn("mt-5 max-w-2xl text-pretty text-lg leading-relaxed text-foreground/80", isRtl && "text-right")}>
+                {cs.heroSubline ?? localizedProject.description}
               </p>
 
-              <dl className="mt-8 grid max-w-2xl grid-cols-2 gap-3 sm:grid-cols-4">
+              <dl className={cn("mt-8 grid max-w-2xl grid-cols-2 gap-3 sm:grid-cols-4", isRtl && "text-right")}>
                 {(["role", "timeline", "industry", "status"] as const).map((k) => {
                   const metaLabel = {
                     role: t("metaRole"),
@@ -214,7 +248,7 @@ export function CaseStudyView({
               </dl>
 
               {(liveHref || project.githubUrl) && (
-                <div className="mt-8 flex flex-wrap gap-3">
+                <div className={cn("mt-8 flex flex-wrap gap-3", isRtl && "justify-end")}>
                   {liveHref && (
                     <Button asChild>
                       <a href={liveHref} target="_blank" rel="noopener noreferrer">
@@ -245,14 +279,14 @@ export function CaseStudyView({
                 <div className="cs-float mx-auto w-fit">
                   <IPhoneMockup
                     src={cs.heroImage ?? project.image}
-                    alt={project.title}
+                    alt={localizedProject.title}
                     chassis="graphite"
                   />
                 </div>
               ) : (
                 <BrowserFrame
                   src={cs.heroImage ?? project.image}
-                  alt={project.title}
+                  alt={localizedProject.title}
                   label={project.id}
                   priority
                 />
@@ -291,14 +325,14 @@ export function CaseStudyView({
               index: "02",
               badge: t("problemEyebrow"),
               title: t("problemTitle"),
-              body: project.problem,
+              body: localizedProject.problem,
             }}
             solution={{
               id: "solution",
               index: "03",
               badge: t("solutionEyebrow"),
               title: t("solutionTitle"),
-              body: project.solution,
+              body: localizedProject.solution,
             }}
           />
         </div>
@@ -362,6 +396,50 @@ export function CaseStudyView({
       )}
 
       {/* 7 — MOBILE APPS (only when this project ships one) */}
+      {desktopShots.length > 0 && (
+        <SectionShell
+          id="desktop"
+          index="07"
+          eyebrow={cs.desktopApplication?.eyebrow ?? t("desktopEyebrow")}
+          title={cs.desktopApplication?.title ?? t("desktopTitle")}
+          icon={Monitor}
+        >
+          <Reveal>
+            <Panel>
+              {cs.desktopApplication?.narrative && (
+                <p className={cn("max-w-3xl leading-relaxed text-foreground/80", isRtl && "text-right")}>
+                  {cs.desktopApplication.narrative}
+                </p>
+              )}
+              {cs.desktopApplication?.highlights?.length ? (
+                <div className="mt-6">
+                  <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-emerald-200/85">
+                    {cs.desktopApplication?.highlightsLabel ?? t("desktopHighlights")}
+                  </div>
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    {cs.desktopApplication.highlights.map((item) => (
+                      <span
+                        key={item}
+                        className="rounded-md border border-foreground/10 bg-card/35 px-2.5 py-1 text-sm text-foreground/85"
+                      >
+                        {item}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              ) : null}
+              <div className="mt-8">
+                <ScreenshotShowcase
+                  shots={desktopShots}
+                  expandLabel={t("expand")}
+                  closeLabel={t("close")}
+                />
+              </div>
+            </Panel>
+          </Reveal>
+        </SectionShell>
+      )}
+
       {mobileTrio.length > 0 && (
         <SectionShell
           index="07"
@@ -682,7 +760,7 @@ export function CaseStudyView({
             <div className="mb-16">
               <Reveal>
                 <div className="flex items-end justify-between gap-4">
-                  <div>
+                  <div className={cn(isRtl && "text-right")}>
                     <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-emerald-200/85">
                       {t("continueExploring")}
                     </div>
@@ -694,7 +772,7 @@ export function CaseStudyView({
                     href="/projects"
                     className="hidden items-center gap-1 text-sm text-foreground/80 hover:text-foreground sm:inline-flex"
                   >
-                    {t("viewArchive")} <ArrowRight className="h-4 w-4" />
+                    {t("viewArchive")} <ArrowRight className="h-4 w-4 rtl:rotate-180" />
                   </Link>
                 </div>
               </Reveal>
@@ -705,7 +783,7 @@ export function CaseStudyView({
           )}
 
           <Reveal>
-            <div className="relative overflow-hidden rounded-3xl border border-foreground/10 bg-gradient-to-br from-emerald-300/[0.06] via-white/[0.03] to-emerald-300/[0.06] p-8 text-center sm:p-12">
+            <div className="relative overflow-hidden rounded-3xl border border-foreground/10 bg-gradient-to-br from-emerald-300/[0.06] via-white/[0.03] to-emerald-300/[0.06] p-8 text-center shadow-[0_8px_24px_-22px_rgba(15,23,42,0.14)] dark:shadow-none sm:p-12">
               <div
                 aria-hidden
                 className="pointer-events-none absolute -top-24 left-1/2 h-48 w-2/3 -translate-x-1/2 rounded-full bg-emerald-400/12 blur-3xl"
@@ -717,10 +795,10 @@ export function CaseStudyView({
                 {t("ctaLead")}
               </p>
               <div className="relative mt-6">
-                <Button asChild size="lg" className="shadow-lg shadow-emerald-950/40">
+                <Button asChild size="lg" className="shadow-[0_4px_18px_-12px_rgba(16,185,129,0.26)] dark:shadow-lg dark:shadow-emerald-950/40">
                   <Link href="/contact">
                     {t("ctaButton")}
-                    <ArrowRight className="h-4 w-4" aria-hidden />
+                    <ArrowRight className="h-4 w-4 rtl:rotate-180" aria-hidden />
                   </Link>
                 </Button>
               </div>

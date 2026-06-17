@@ -1,6 +1,9 @@
 "use client"
 
+import { useTranslations } from "next-intl"
+
 export function ProjectCardButton({ url }: { url: string }) {
+  const t = useTranslations("projects.labels")
   return (
     <button
       onClick={(e) => {
@@ -29,7 +32,7 @@ export function ProjectCardButton({ url }: { url: string }) {
         cursor: "pointer",
       }}
     >
-      View Project
+      {t("viewProject")}
     </button>
   )
 }

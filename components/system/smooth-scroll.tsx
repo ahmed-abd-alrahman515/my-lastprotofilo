@@ -14,14 +14,23 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
     const prefersReduced = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
-    if (prefersReduced) return;
+    const nav = navigator as Navigator & {
+      connection?: { saveData?: boolean };
+      deviceMemory?: number;
+    };
+    const lowPower =
+      (nav.connection?.saveData ?? false) ||
+      (nav.hardwareConcurrency ?? 8) <= 4 ||
+      (nav.deviceMemory ?? 8) <= 4 ||
+      window.matchMedia("(max-width: 767px)").matches;
+    if (prefersReduced || lowPower) return;
 
     const lenis = new Lenis({
-      duration: 1.1,
+      duration: 0.95,
       easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
       wheelMultiplier: 1,
-      touchMultiplier: 1.4,
+      touchMultiplier: 1.1,
     });
 
     let rafId = 0;

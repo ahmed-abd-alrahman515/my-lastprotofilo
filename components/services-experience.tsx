@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import { useTranslations } from "next-intl";
-import { Calendar } from "lucide-react";
 import {
   Workflow,
   Code2,
@@ -300,26 +299,11 @@ export function ServicesExperience() {
             </h2>
             <p className="mx-auto mt-3 max-w-xl text-pretty text-foreground/80">{t("closer.lead")}</p>
             <div className="mt-7 flex flex-wrap items-center justify-center gap-3">
-              <Button asChild size="lg" className="shadow-lg shadow-emerald-950/40">
+              <Button asChild size="lg" className="shadow-[0_4px_18px_-12px_rgba(16,185,129,0.26)] dark:shadow-lg dark:shadow-emerald-950/40">
                 <Link href="/contact">
                   {tA("getInTouch")}
                   <ArrowRight className="h-4 w-4 rtl:rotate-180" />
                 </Link>
-              </Button>
-              <Button
-                asChild
-                variant="outline"
-                size="lg"
-                className="border-foreground/15 bg-foreground/[0.06] text-foreground hover:border-emerald-200/35 hover:bg-foreground/[0.12]"
-              >
-                <a
-                  href="https://calendly.com/ahmedalayde86/30min"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <Calendar className="me-2 h-4 w-4" />
-                  {tA("bookCall")}
-                </a>
               </Button>
             </div>
           </Reveal>
