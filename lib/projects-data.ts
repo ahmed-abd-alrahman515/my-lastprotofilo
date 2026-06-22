@@ -854,7 +854,7 @@ export const projects: Project[] = [
 
 
 
-  //awlad_ragab
+    //awlad_ragab
   {
     id: "awlad-ragab-wholesale-platform",
     title: "Awlad Ragab Wholesale Platform + Mobile Apps",
@@ -1219,6 +1219,8 @@ export const projects: Project[] = [
       },
     },
   },
+
+
 
 
 
