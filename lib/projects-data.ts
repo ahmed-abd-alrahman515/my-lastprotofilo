@@ -926,20 +926,20 @@ export const projects: Project[] = [
       mobileEcosystem: {
         systemScreenshots: [
           {
-            src: "/image/awladragab/image_1_1_1.PNG ",
+            src: "/image/awladragab/image_1_1_1.PNG",
             title: "Executive Dashboard",
             description:
               "Business KPIs, order statistics, sales performance, and operational insights.",
           },
           {
-            src: "/image/awladragab/image-1.PNG ",
+            src: "/image/awladragab/image-1.PNG",
 
             title: "Orders Management",
             description:
               "Manage wholesale orders, statuses, approvals, and processing workflows.",
           },
           {
-            src: "/image/awladragab/image-1_1.PNG ",
+            src: "/image/awladragab/image-1_1.PNG",
             title: "Products & Categories",
             description:
               "Centralized management of products, units, categories, and inventory structures.",
